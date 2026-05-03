@@ -8,10 +8,11 @@ export type TutorListing = {
   rating: number;
   reviews: number;
   available: boolean;
+  email?: string;
+  phone?: string;
 };
 
 export const catalogData: TutorListing[] = [
-  // ── Original entries ──────────────────────────
   {
     id: 1,
     name: "ralpp",
@@ -22,6 +23,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 42,
     available: true,
+    email: "ralpp@tutofriends.com",
+    phone: "+63 912 345 6789",
   },
   {
     id: 2,
@@ -33,7 +36,10 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 31,
     available: true,
+    email: "echonchon@tutofriends.com",
+    phone: "+63 917 234 5678",
   },
+  // ... rest of your entries, add email/phone to each
   {
     id: 3,
     name: "calcal",
@@ -44,6 +50,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 27,
     available: false,
+    email: "calcal@tutofriends.com",
+    phone: "+63 918 345 6789",
   },
   {
     id: 4,
@@ -55,6 +63,8 @@ export const catalogData: TutorListing[] = [
     rating: 5.0,
     reviews: 19,
     available: true,
+    email: "conchon@tutofriends.com",
+    phone: "+63 919 456 7890",
   },
   {
     id: 5,
@@ -66,6 +76,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.6,
     reviews: 38,
     available: true,
+    email: "glglg@tutofriends.com",
+    phone: "+63 920 567 8901",
   },
   {
     id: 6,
@@ -77,6 +89,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 22,
     available: true,
+    email: "emienil@tutofriends.com",
+    phone: "+63 921 678 9012",
   },
   {
     id: 7,
@@ -88,6 +102,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 15,
     available: false,
+    email: "eminl@tutofriends.com",
+    phone: "+63 922 789 0123",
   },
   {
     id: 8,
@@ -99,9 +115,9 @@ export const catalogData: TutorListing[] = [
     rating: 4.5,
     reviews: 50,
     available: true,
+    email: "rlp@tutofriends.com",
+    phone: "+63 923 890 1234",
   },
-
-  // ── Ralph ─────────────────────────────────────
   {
     id: 9,
     name: "Ralph",
@@ -112,6 +128,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 42,
     available: true,
+    email: "ralph@tutofriends.com",
+    phone: "+63 912 345 6789",
   },
   {
     id: 10,
@@ -123,6 +141,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 18,
     available: true,
+    email: "ralph@tutofriends.com",
+    phone: "+63 912 345 6789",
   },
   {
     id: 11,
@@ -134,6 +154,8 @@ export const catalogData: TutorListing[] = [
     rating: 5.0,
     reviews: 11,
     available: false,
+    email: "ralph@tutofriends.com",
+    phone: "+63 912 345 6789",
   },
   {
     id: 12,
@@ -145,9 +167,9 @@ export const catalogData: TutorListing[] = [
     rating: 4.6,
     reviews: 55,
     available: true,
+    email: "ralph@tutofriends.com",
+    phone: "+63 912 345 6789",
   },
-
-  // ── Chon ──────────────────────────────────────
   {
     id: 13,
     name: "Chon",
@@ -158,6 +180,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 31,
     available: true,
+    email: "chon@tutofriends.com",
+    phone: "+63 917 234 5678",
   },
   {
     id: 14,
@@ -169,6 +193,8 @@ export const catalogData: TutorListing[] = [
     rating: 5.0,
     reviews: 19,
     available: true,
+    email: "chon@tutofriends.com",
+    phone: "+63 917 234 5678",
   },
   {
     id: 15,
@@ -180,6 +206,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 24,
     available: false,
+    email: "chon@tutofriends.com",
+    phone: "+63 917 234 5678",
   },
   {
     id: 16,
@@ -191,9 +219,9 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 14,
     available: true,
+    email: "chon@tutofriends.com",
+    phone: "+63 917 234 5678",
   },
-
-  // ── Acal ──────────────────────────────────────
   {
     id: 17,
     name: "Acal",
@@ -204,6 +232,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 27,
     available: false,
+    email: "acal@tutofriends.com",
+    phone: "+63 918 345 6789",
   },
   {
     id: 18,
@@ -215,6 +245,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 20,
     available: true,
+    email: "acal@tutofriends.com",
+    phone: "+63 918 345 6789",
   },
   {
     id: 19,
@@ -226,6 +258,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.6,
     reviews: 33,
     available: true,
+    email: "acal@tutofriends.com",
+    phone: "+63 918 345 6789",
   },
   {
     id: 20,
@@ -237,9 +271,9 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 41,
     available: true,
+    email: "acal@tutofriends.com",
+    phone: "+63 918 345 6789",
   },
-
-  // ── LG ────────────────────────────────────────
   {
     id: 21,
     name: "LG",
@@ -250,6 +284,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.6,
     reviews: 38,
     available: true,
+    email: "lg@tutofriends.com",
+    phone: "+63 920 567 8901",
   },
   {
     id: 22,
@@ -261,6 +297,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 29,
     available: true,
+    email: "lg@tutofriends.com",
+    phone: "+63 920 567 8901",
   },
   {
     id: 23,
@@ -272,6 +310,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.5,
     reviews: 44,
     available: false,
+    email: "lg@tutofriends.com",
+    phone: "+63 920 567 8901",
   },
   {
     id: 24,
@@ -283,9 +323,9 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 17,
     available: true,
+    email: "lg@tutofriends.com",
+    phone: "+63 920 567 8901",
   },
-
-  // ── Emi ───────────────────────────────────────
   {
     id: 25,
     name: "Emi",
@@ -296,6 +336,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 22,
     available: true,
+    email: "emi@tutofriends.com",
+    phone: "+63 921 678 9012",
   },
   {
     id: 26,
@@ -307,6 +349,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.9,
     reviews: 15,
     available: false,
+    email: "emi@tutofriends.com",
+    phone: "+63 921 678 9012",
   },
   {
     id: 27,
@@ -318,6 +362,8 @@ export const catalogData: TutorListing[] = [
     rating: 4.7,
     reviews: 36,
     available: true,
+    email: "emi@tutofriends.com",
+    phone: "+63 921 678 9012",
   },
   {
     id: 28,
@@ -329,5 +375,7 @@ export const catalogData: TutorListing[] = [
     rating: 4.8,
     reviews: 21,
     available: true,
+    email: "emi@tutofriends.com",
+    phone: "+63 921 678 9012",
   },
 ];

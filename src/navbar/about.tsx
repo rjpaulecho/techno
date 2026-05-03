@@ -1,4 +1,7 @@
-import { tutorsData } from "../data/devs";
+import { useState } from "react";
+import { tutorsData, leadershipData } from "../data/devs";
+import type { Tutor } from "../data/devs";
+import DevModal from "../components/DevModal";
 import "../css/about.css";
 import { Link } from "react-router-dom";
 
@@ -17,8 +20,24 @@ const stats = [
 ];
 
 function About() {
+  const [selectedDev, setSelectedDev] = useState<Tutor | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAllContributors, setShowAllContributors] = useState(false);
+
+  const openModal = (dev: Tutor) => {
+    setSelectedDev(dev);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="about-page-light">
+
+      {/* ── Dev Modal ────────────────────────────── */}
+      <DevModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        dev={selectedDev}
+      />
 
       {/* ── Hero ─────────────────────────────────── */}
       <section className="abl-hero">
@@ -86,12 +105,18 @@ function About() {
         <p className="abl-eyebrow" style={{ textAlign: "center" }}>The People Behind It</p>
         <h2 className="abl-section-title">Meet the Devs</h2>
         <p className="abl-section-sub">
-          The same team you'll find in the <strong>Contact</strong> page —
-          click any card there to see their full profile.
+          Click any card to see quick info and contact details.
         </p>
         <div className="abl-team-grid">
           {tutorsData.map((dev) => (
-            <div className="abl-team-card abl-panel" key={dev.id}>
+            <div
+              className="abl-team-card abl-panel abl-team-card--clickable"
+              key={dev.id}
+              onClick={() => openModal(dev)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && openModal(dev)}
+            >
               <div className="abl-team-img-wrap">
                 <img src={dev.image} alt={dev.name} className="abl-team-img" />
                 <div className="abl-team-img-glow" />
@@ -104,8 +129,107 @@ function About() {
                   <span className="abl-team-tag" key={tag}>{tag}</span>
                 ))}
               </div>
+              <span className="abl-team-hint">Click to view profile</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── Leadership ───────────────────────────── */}
+      <section className="abl-section">
+        <p className="abl-eyebrow" style={{ textAlign: "center" }}>The Ones Who Started It</p>
+        <h2 className="abl-section-title">Leadership</h2>
+        <p className="abl-section-sub">
+          The two who had the crazy idea and refused to let it die.
+        </p>
+
+        {/* Founder + Co-Founder cards */}
+        <div className="abl-leadership-grid">
+          {leadershipData.map((leader) => (
+            <div className="abl-leader-card abl-panel" key={leader.id}>
+              {/* Badge */}
+              <span className="abl-leader-badge">
+                {leader.leadershipRole === "Founder" ? "👑" : "🌟"} {leader.leadershipRole}
+              </span>
+
+              {/* Avatar */}
+              <div className="abl-leader-avatar-wrap">
+                <img src={leader.image} alt={leader.name} className="abl-leader-avatar" />
+                <div className="abl-leader-avatar-ring" />
+              </div>
+
+              <h3 className="abl-leader-name">{leader.name}</h3>
+              <span className="abl-leader-role">{leader.role}</span>
+
+              {/* Quote */}
+              <blockquote className="abl-leader-quote">
+                "{leader.quote}"
+              </blockquote>
+
+              <p className="abl-leader-bio">{leader.bio}</p>
+
+              {/* Contact links */}
+              {leader.contact && (
+                <div className="abl-leader-links">
+                  {leader.contact.email && (
+                    <a href={`mailto:${leader.contact.email}`} className="abl-leader-link" title="Email">📧</a>
+                  )}
+                  {leader.contact.facebook && (
+                    <a href={leader.contact.facebook} target="_blank" rel="noopener noreferrer" className="abl-leader-link" title="Facebook">🔵</a>
+                  )}
+                  {leader.contact.twitter && (
+                    <a href={leader.contact.twitter} target="_blank" rel="noopener noreferrer" className="abl-leader-link" title="Twitter / X">🐦</a>
+                  )}
+                  {leader.contact.phone && (
+                    <a href={`tel:${leader.contact.phone}`} className="abl-leader-link" title="Phone">📞</a>
+                  )}
+                  {leader.contact.cell && (
+                    <a href={`tel:${leader.contact.cell}`} className="abl-leader-link" title="Cell">📱</a>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* ── See All Contributors ─────────────── */}
+        <div className="abl-contributors-wrap">
+          <button
+            className="abl-contributors-toggle"
+            onClick={() => setShowAllContributors((v) => !v)}
+            aria-expanded={showAllContributors}
+          >
+            <span>{showAllContributors ? "Hide" : "See All"} Contributors</span>
+            <span className="abl-contributors-toggle-arrow" style={{ transform: showAllContributors ? "rotate(180deg)" : "rotate(0deg)" }}>
+              ↓
+            </span>
+          </button>
+
+          {showAllContributors && (
+            <div className="abl-contributors-list">
+              <p className="abl-contributors-note">
+                Everyone below contributed to building TutoFriends. To add yourself, see the instructions in <code>src/data/devs.ts</code>.
+              </p>
+              <div className="abl-contributors-grid">
+                {tutorsData.map((dev) => (
+                  <div
+                    className="abl-contributor-chip"
+                    key={dev.id}
+                    onClick={() => openModal(dev)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === "Enter" && openModal(dev)}
+                  >
+                    <img src={dev.image} alt={dev.name} className="abl-contributor-avatar" />
+                    <div>
+                      <span className="abl-contributor-name">{dev.name}</span>
+                      <span className="abl-contributor-role">{dev.role}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

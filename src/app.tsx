@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/dashboard";
@@ -19,8 +19,19 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true"
   );
-
   const [showIntro, setShowIntro] = useState(true);
+
+  // ── Dark mode — persisted in localStorage ──
+  const [isDark, setIsDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
+
+  const toggleDark = () => setIsDark((v) => !v);
 
   const handleLogin = () => {
     localStorage.setItem("loggedIn", "true");
@@ -32,85 +43,35 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const handleIntroFinish = () => {
-    setShowIntro(false);
-  };
+  const handleIntroFinish = () => setShowIntro(false);
 
-  /* 🌟 INTRO FIRST (before router loads) */
   if (showIntro) {
     return <Intro onFinish={handleIntroFinish} />;
   }
 
   return (
     <BrowserRouter>
-      {isLoggedIn && <Navbar onLogout={handleLogout} />}
+      {isLoggedIn && <Navbar onLogout={handleLogout} isDark={isDark} onToggleDark={toggleDark} />}
 
       <Routes>
-        {/* 🔥 AFTER LOGIN GOES TO SERVICES */}
         <Route
           path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/services" />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
+          element={isLoggedIn ? <Navigate to="/services" /> : <Login onLogin={handleLogin} />}
         />
-
         <Route
           path="/login"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/services" />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
+          element={isLoggedIn ? <Navigate to="/services" /> : <Login onLogin={handleLogin} />}
         />
-
-        {/* 🌟 MAIN LANDING AFTER LOGIN */}
-        <Route
-          path="/services"
-          element={isLoggedIn ? <Services /> : <Navigate to="/" />}
-        />
-
-        {/* STILL KEPT - DASHBOARD ROUTE UNCHANGED */}
-        <Route
-          path="/dashboard"
-          element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />}
-        />
-
-        <Route
-          path="/about"
-          element={isLoggedIn ? <About /> : <Navigate to="/" />}
-        />
-
-        <Route
-          path="/contact"
-          element={isLoggedIn ? <Contact /> : <Navigate to="/" />}
-        />
-
-        <Route
-          path="/catalog"
-          element={isLoggedIn ? <Catalog /> : <Navigate to="/" />}
-        />
-
-                <Route
-          path="/bookings"
-          element={isLoggedIn ? <MyBookings /> : <Navigate to="/" />}
-        />
-
-                        <Route
-          path="/profile"
-          element={isLoggedIn ? <Profile /> : <Navigate to="/" />}
-        />
-
+        <Route path="/services"   element={isLoggedIn ? <Services />   : <Navigate to="/" />} />
+        <Route path="/dashboard"  element={isLoggedIn ? <Dashboard />  : <Navigate to="/" />} />
+        <Route path="/about"      element={isLoggedIn ? <About />      : <Navigate to="/" />} />
+        <Route path="/contact"    element={isLoggedIn ? <Contact />    : <Navigate to="/" />} />
+        <Route path="/catalog"    element={isLoggedIn ? <Catalog />    : <Navigate to="/" />} />
+        <Route path="/bookings"   element={isLoggedIn ? <MyBookings /> : <Navigate to="/" />} />
+        <Route path="/profile"    element={isLoggedIn ? <Profile />    : <Navigate to="/" />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
-
-    
   );
 }
 

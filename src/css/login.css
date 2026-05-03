@@ -1,0 +1,277 @@
+/* ── FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500&display=swap');
+
+
+/* ════════════════════════════════════════════
+   LOGIN PAGE
+   ════════════════════════════════════════════ */
+
+/* ── Page wrapper ── */
+.login-container {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at top, #0b1020, #000);   /* ✏️ bg gradient */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Glow blob ── */
+.login-glow {
+  position: absolute;
+  pointer-events: none;
+  width: 800px;                                                 /* ✏️ glow size */
+  height: 800px;
+  background: radial-gradient(circle, rgba(120, 160, 255, 0.18), transparent 60%);  /* ✏️ glow colour */
+  filter: blur(90px);
+  animation: floatGlow 7s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(60px, -40px); }              /* ✏️ drift distance */
+}
+
+/* ── Page entrance ── */
+.cinematic-fade-in { animation: fadeUp 0.8s ease forwards; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ── Glass card ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);                        /* ✏️ card opacity */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Form layout ── */
+.login-form {
+  padding: 30px;                                                /* ✏️ inner padding */
+  border-radius: 16px;
+  width: 340px;                                                 /* ✏️ card width */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                                                    /* ✏️ gap between rows */
+  color: white;
+}
+
+
+/* ══ SOCIAL BUTTONS ══════════════════════════════════════════ */
+
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                                                    /* ✏️ gap between social buttons */
+}
+
+/* Base social button */
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px;                                           /* ✏️ button padding */
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 14px;                                              /* ✏️ button text size */
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.social-btn:hover  { opacity: 0.88; transform: translateY(-1px); }
+.social-btn:active { transform: translateY(0); }
+
+.social-icon {
+  width: 20px;                                                  /* ✏️ logo icon size */
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Google — white background, dark text */
+.social-btn--google {
+  background: #fff;
+  color: #3c4043;
+}
+
+/* Facebook — brand blue */
+.social-btn--facebook {
+  background: rgb(45, 29, 29);
+  color: #fff;
+}
+
+
+/* ══ DIVIDER ═════════════════════════════════════════════════ */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);                        /* ✏️ line colour */
+}
+
+.divider-text {
+  font-size: 12px;                                              /* ✏️ "or" text size */
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+}
+
+
+/* ══ EMAIL / PASSWORD INPUTS ═════════════════════════════════ */
+
+.login-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);                        /* ✏️ input bg */
+  color: white;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus {
+  border-color: rgba(120, 160, 255, 0.6);                       /* ✏️ focus ring colour */
+}
+
+.login-input::placeholder { color: rgba(255,255,255,0.35); }
+
+
+/* ── Password row (input + eye button) ── */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Shrink the input so it doesn't overlap the eye button */
+.password-input { padding-right: 42px; }
+
+/* Eye toggle button */
+.eye-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: rgba(255, 255, 255, 0.45);                             /* ✏️ eye icon colour */
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.eye-btn:hover { color: rgba(255, 255, 255, 0.9); }
+
+.eye-btn svg {
+  width: 18px;                                                  /* ✏️ eye icon size */
+  height: 18px;
+}
+
+
+/* ── Password hint / live warning ── */
+.password-hint {
+  margin: -4px 0 0;
+  font-size: 11px;                                              /* ✏️ hint text size */
+  color: rgba(255, 255, 255, 0.35);                             /* default = muted */
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+
+/* Turns amber when the password is too short */
+.password-hint--warn { color: #fbbf24; }                        /* ✏️ warning colour */
+
+
+/* ── Form-level error ── */
+.form-error {
+  margin: 0;
+  font-size: 13px;
+  color: #f87171;                                               /* ✏️ error colour */
+}
+
+
+/* ══ ACTION BUTTONS ══════════════════════════════════════════ */
+
+.login-button {
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #6ea8ff, #8b5cf6);         /* ✏️ gradient colours */
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.login-button:hover  { opacity: 0.9; transform: translateY(-1px); }
+.login-button:active { transform: translateY(0); }
+
+.register-button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);                              /* ✏️ link colour */
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.register-button:hover { color: rgba(255, 255, 255, 0.85); }
+
+
+/* ══ HEADING ═════════════════════════════════════════════════ */
+
+.login-title {
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;                                          /* ✏️ gap heading→card */
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.small-text {
+  display: block;
+  font-size: 14px;                                              /* ✏️ "welcome to" size */
+  opacity: 0.5;
+  letter-spacing: 2px;
+}
+
+.brand-name {
+  font-size: 40px;                                              /* ✏️ brand name size */
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.create-account {
+  font-size: 2.2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ffffff, #b3d4ff);         /* ✏️ gradient colours */
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-info {
+  font-size: 13px;                                              /* ✏️ subtitle size */
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}

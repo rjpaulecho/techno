@@ -5,6 +5,8 @@ import "../css/BookingModal.css";
 
 type Step = "datetime" | "duration" | "message" | "payment" | "confirmed";
 
+type PaymentMethod = "Card" | "GCash" | "Maya";
+
 const TIME_SLOTS = [
   "08:00", "09:00", "10:00", "11:00",
   "13:00", "14:00", "15:00", "16:00", "17:00",
@@ -27,21 +29,35 @@ const STEP_LABELS: Record<Step, string> = {
 
 const STEPS: Step[] = ["datetime", "duration", "message", "payment"];
 
+const PAYMENT_METHODS: { id: PaymentMethod; label: string; icon: string; color: string; desc: string }[] = [
+  { id: "Card",  label: "Card",   icon: "💳", color: "#0074e4", desc: "Credit / Debit" },
+  { id: "GCash", label: "GCash",  icon: "G",  color: "#0070E0", desc: "GCash Wallet"  },
+  { id: "Maya",  label: "Maya",   icon: "M",  color: "#6c3bff", desc: "Maya Wallet"   },
+];
+
 type Props = {
   tutor: TutorListing;
   onClose: () => void;
 };
 
 const BookingModal = ({ tutor, onClose }: Props) => {
-  const [step, setStep]           = useState<Step>("datetime");
-  const [date, setDate]           = useState("");
-  const [time, setTime]           = useState("");
-  const [duration, setDuration]   = useState<number>(1);
-  const [message, setMessage]     = useState("");
-  const [cardName, setCardName]   = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCvv, setCardCvv]     = useState("");
+  const [step, setStep]                 = useState<Step>("datetime");
+  const [date, setDate]                 = useState("");
+  const [time, setTime]                 = useState("");
+  const [duration, setDuration]         = useState<number>(1);
+  const [message, setMessage]           = useState("");
+
+  // Payment method state
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("Card");
+
+  // Card fields
+  const [cardName, setCardName]         = useState("");
+  const [cardNumber, setCardNumber]     = useState("");
+  const [cardExpiry, setCardExpiry]     = useState("");
+  const [cardCvv, setCardCvv]           = useState("");
+
+  // E-wallet / GCash / Maya field
+  const [walletNumber, setWalletNumber] = useState("");
 
   const rateNum = parseInt(tutor.rate.replace(/[^\d]/g, ""), 10) || 0;
   const total   = rateNum * duration;
@@ -49,6 +65,32 @@ const BookingModal = ({ tutor, onClose }: Props) => {
 
   const currentIdx = STEPS.indexOf(step);
   const progress   = step === "confirmed" ? 100 : ((currentIdx + 1) / STEPS.length) * 100;
+
+  const formatCardNumber = (v: string) =>
+    v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+
+  const formatExpiry = (v: string) => {
+    const digits = v.replace(/\D/g, "").slice(0, 4);
+    return digits.length >= 3 ? digits.slice(0, 2) + "/" + digits.slice(2) : digits;
+  };
+
+  const formatWalletNumber = (v: string) =>
+    v.replace(/\D/g, "").slice(0, 11);
+
+  const isPaymentValid = (() => {
+    if (paymentMethod === "Card") {
+      return (
+        cardName.trim().length > 0 &&
+        cardNumber.replace(/\s/g, "").length === 16 &&
+        cardExpiry.length === 5 &&
+        cardCvv.length === 3
+      );
+    }
+    if (paymentMethod === "GCash" || paymentMethod === "Maya") {
+      return walletNumber.length === 11;
+    }
+    return false;
+  })();
 
   const handleConfirm = () => {
     bookingService.add({
@@ -62,23 +104,20 @@ const BookingModal = ({ tutor, onClose }: Props) => {
       duration,
       message,
       totalCost:    total,
+      paymentMethod,
     });
     setStep("confirmed");
   };
 
-  const formatCardNumber = (v: string) =>
-    v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
-
-  const formatExpiry = (v: string) => {
-    const digits = v.replace(/\D/g, "").slice(0, 4);
-    return digits.length >= 3 ? digits.slice(0, 2) + "/" + digits.slice(2) : digits;
+  // Reset wallet number when switching methods
+  const handleMethodChange = (method: PaymentMethod) => {
+    setPaymentMethod(method);
+    setWalletNumber("");
+    setCardName("");
+    setCardNumber("");
+    setCardExpiry("");
+    setCardCvv("");
   };
-
-  const isPaymentValid =
-    cardName.trim() &&
-    cardNumber.replace(/\s/g, "").length === 16 &&
-    cardExpiry.length === 5 &&
-    cardCvv.length === 3;
 
   return (
     <div className="bm-overlay" onClick={onClose}>
@@ -232,47 +271,107 @@ const BookingModal = ({ tutor, onClose }: Props) => {
               </div>
             </div>
 
-            <label className="bm-label">Cardholder Name</label>
-            <input
-              className="bm-input"
-              placeholder="Juan Dela Cruz"
-              value={cardName}
-              onChange={(e) => setCardName(e.target.value)}
-            />
-
-            <label className="bm-label">Card Number</label>
-            <input
-              className="bm-input bm-card-input"
-              placeholder="1234 5678 9012 3456"
-              value={cardNumber}
-              maxLength={19}
-              onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-            />
-
-            <div className="bm-row-2">
-              <div>
-                <label className="bm-label">Expiry</label>
-                <input
-                  className="bm-input"
-                  placeholder="MM/YY"
-                  maxLength={5}
-                  value={cardExpiry}
-                  onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
-                />
-              </div>
-              <div>
-                <label className="bm-label">CVV</label>
-                <input
-                  className="bm-input"
-                  placeholder="123"
-                  maxLength={3}
-                  value={cardCvv}
-                  onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 3))}
-                />
-              </div>
+            {/* ── PAYMENT METHOD SELECTOR ── */}
+            <label className="bm-label">Payment Method</label>
+            <div className="bm-method-grid">
+              {PAYMENT_METHODS.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  className={`bm-method-card ${paymentMethod === m.id ? "active" : ""}`}
+                  style={{ "--method-color": m.color } as React.CSSProperties}
+                  onClick={() => handleMethodChange(m.id)}
+                >
+                  <span className="bm-method-icon">{m.icon}</span>
+                  <span className="bm-method-label">{m.label}</span>
+                  <span className="bm-method-desc">{m.desc}</span>
+                </button>
+              ))}
             </div>
 
-            <p className="bm-secure-note">🔒 Your Information is Secured </p>
+            {/* ── CARD FIELDS ── */}
+            {paymentMethod === "Card" && (
+              <div className="bm-payment-fields bm-animate">
+                <label className="bm-label">Cardholder Name</label>
+                <input
+                  className="bm-input"
+                  placeholder="Juan Dela Cruz"
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
+                />
+
+                <label className="bm-label">Card Number</label>
+                <input
+                  className="bm-input bm-card-input"
+                  placeholder="1234 5678 9012 3456"
+                  value={cardNumber}
+                  maxLength={19}
+                  onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                />
+
+                <div className="bm-row-2">
+                  <div>
+                    <label className="bm-label">Expiry</label>
+                    <input
+                      className="bm-input"
+                      placeholder="MM/YY"
+                      maxLength={5}
+                      value={cardExpiry}
+                      onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
+                    />
+                  </div>
+                  <div>
+                    <label className="bm-label">CVV</label>
+                    <input
+                      className="bm-input"
+                      placeholder="123"
+                      maxLength={3}
+                      value={cardCvv}
+                      onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 3))}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── GCASH / MAYA FIELDS ── */}
+            {(paymentMethod === "GCash" || paymentMethod === "Maya") && (
+              <div className="bm-payment-fields bm-animate">
+                <div
+                  className="bm-wallet-banner"
+                  style={{
+                    background: paymentMethod === "GCash"
+                      ? "linear-gradient(135deg, #0070E0, #00b4ff)"
+                      : "linear-gradient(135deg, #6c3bff, #a855f7)",
+                  }}
+                >
+                  <span className="bm-wallet-logo">
+                    {paymentMethod === "GCash" ? "G" : "M"}
+                  </span>
+                  <div>
+                    <p className="bm-wallet-name">{paymentMethod}</p>
+                    <p className="bm-wallet-note">Enter your registered mobile number</p>
+                  </div>
+                </div>
+
+                <label className="bm-label">{paymentMethod} Mobile Number</label>
+                <div className="bm-phone-wrap">
+                  <span className="bm-phone-prefix">🇵🇭 +63</span>
+                  <input
+                    className="bm-input bm-phone-input"
+                    placeholder="9XXXXXXXXX"
+                    value={walletNumber}
+                    maxLength={11}
+                    onChange={(e) => setWalletNumber(formatWalletNumber(e.target.value))}
+                  />
+                </div>
+                {walletNumber.length > 0 && walletNumber.length < 11 && (
+                  <p className="bm-field-hint">Enter your 11-digit mobile number</p>
+                )}
+              </div>
+            )}
+
+            <p className="bm-secure-note">🔒 Your Information is Secured</p>
 
             <div className="bm-nav-row">
               <button className="bm-back-btn" onClick={() => setStep("message")}>← Back</button>
@@ -304,7 +403,7 @@ const BookingModal = ({ tutor, onClose }: Props) => {
                 <span>{duration} hr{duration !== 1 ? "s" : ""}</span>
               </div>
               <div className="bm-confirmed-row">
-                <span>💰</span><span>₱{total} paid</span>
+                <span>💰</span><span>₱{total} via {paymentMethod}</span>
               </div>
             </div>
             <p className="bm-confirmed-note">

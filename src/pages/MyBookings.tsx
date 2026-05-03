@@ -16,11 +16,26 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: "#dc2626",
 };
 
+const PAYMENT_ICONS: Record<string, string> = {
+  Card:  "💳",
+  GCash: "G",
+  Maya:  "M",
+};
+
+const PAYMENT_COLORS: Record<string, string> = {
+  Card:  "#0074e4",
+  GCash: "#0070E0",
+  Maya:  "#6c3bff",
+};
+
 const MyBookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [filter, setFilter]     = useState<FilterType>("all");
 
-  const reload = () => setBookings(bookingService.getAll().reverse());
+  const reload = () => {
+    bookingService.autoComplete();
+    setBookings(bookingService.getAll().reverse());
+  };
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { reload(); }, []);
@@ -141,6 +156,22 @@ const MyBookings = () => {
                     ⏱ {booking.duration} hr{booking.duration !== 1 ? "s" : ""}
                   </span>
                   <span className="mybk-detail mybk-cost">₱{booking.totalCost}</span>
+
+                  {/* Payment method badge */}
+                  {booking.paymentMethod && (
+                    <span
+                      className="mybk-detail mybk-payment-badge"
+                      style={{
+                        color: PAYMENT_COLORS[booking.paymentMethod] ?? "#555",
+                        background: `${PAYMENT_COLORS[booking.paymentMethod] ?? "#555"}18`,
+                      }}
+                    >
+                      <span className="mybk-payment-icon">
+                        {PAYMENT_ICONS[booking.paymentMethod] ?? "💳"}
+                      </span>
+                      {booking.paymentMethod}
+                    </span>
+                  )}
                 </div>
 
                 {booking.message && (

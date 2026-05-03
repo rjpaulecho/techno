@@ -395,6 +395,198 @@
   color: #1a1a1a;
 }
 
+/* ── PAYMENT METHOD GRID ── */
+.bm-method-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.bm-method-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px 10px;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  text-align: center;
+}
+
+.bm-method-card:hover {
+  border-color: var(--method-color, #0074e4);
+  background: color-mix(in srgb, var(--method-color, #0074e4) 5%, white);
+}
+
+.bm-method-card.active {
+  border-color: var(--method-color, #0074e4);
+  background: color-mix(in srgb, var(--method-color, #0074e4) 10%, white);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--method-color, #0074e4) 30%, transparent);
+}
+
+.bm-method-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--method-color, #0074e4) 12%, white);
+  color: var(--method-color, #0074e4);
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.bm-method-card.active .bm-method-icon {
+  background: var(--method-color, #0074e4);
+  color: white;
+}
+
+.bm-method-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.bm-method-desc {
+  font-size: 10px;
+  color: #aaa;
+  line-height: 1;
+}
+
+/* ── PAYMENT FIELDS WRAPPER ── */
+.bm-payment-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1.5px solid #f0f0f0;
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+/* ── WALLET BANNER ── */
+.bm-wallet-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: white;
+}
+
+.bm-wallet-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+  flex-shrink: 0;
+}
+
+.bm-wallet-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 2px;
+}
+
+.bm-wallet-note {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* ── PHONE INPUT ── */
+.bm-phone-wrap {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bm-phone-wrap:focus-within {
+  border-color: #0074e4;
+  box-shadow: 0 0 0 3px rgba(0, 116, 228, 0.1);
+}
+
+.bm-phone-prefix {
+  padding: 11px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  background: #f7f8fc;
+  border-right: 1.5px solid #e8e8e8;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bm-phone-input {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex: 1;
+  padding: 11px 12px !important;
+}
+
+.bm-phone-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.bm-field-hint {
+  font-size: 11px;
+  color: #f59e0b;
+  margin: -6px 0 0;
+}
+
+/* ── CASH BANNER ── */
+.bm-cash-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(22, 163, 74, 0.07);
+  border: 1.5px solid rgba(22, 163, 74, 0.2);
+}
+
+.bm-cash-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.bm-cash-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #15803d;
+  margin: 0 0 4px;
+}
+
+.bm-cash-desc {
+  font-size: 12px;
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── SECURE NOTE ── */
 .bm-secure-note {
   font-size: 11px;
   color: #aaa;
@@ -554,5 +746,9 @@
 
   .bm-dur-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .bm-method-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

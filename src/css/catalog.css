@@ -301,3 +301,371 @@ img.tutor-photo {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ── Clickable card cursor ────────────────────── */
+.tutor-card--clickable {
+  cursor: pointer;
+}
+
+/* ════════════════════════════════════════════════
+   TUTOR PROFILE MODAL
+   ════════════════════════════════════════════════ */
+
+.tp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  animation: tp-fade-in 0.2s ease;
+}
+
+@keyframes tp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.tp-modal {
+  background: #ffffff;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: tp-slide-up 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes tp-slide-up {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Close button ─────────────────────────────── */
+.tp-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.15);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s ease;
+}
+
+.tp-close:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Banner ───────────────────────────────────── */
+.tp-banner {
+  position: relative;
+  height: 160px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 28px 28px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tp-banner-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.18) 0%, transparent 70%);
+}
+
+.tp-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+}
+
+.tp-status {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.tp-status.available {
+  background: rgba(34, 197, 94, 0.2);
+  color: #dcfce7;
+}
+
+.tp-status.unavailable {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fee2e2;
+}
+
+/* ── Body ─────────────────────────────────────── */
+.tp-body {
+  padding: 64px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Identity ─────────────────────────────────── */
+.tp-identity {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tp-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.tp-subject {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+
+.tp-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tp-stars { color: #f59e0b; font-size: 13px; }
+.tp-reviews { font-size: 0.78rem; color: var(--text-muted); }
+
+/* ── Tags ─────────────────────────────────────── */
+.tp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* ── Divider ──────────────────────────────────── */
+.tp-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 999px;
+}
+
+/* ── Contact list ─────────────────────────────── */
+.tp-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tp-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 116, 228, 0.04);
+  border: 1px solid rgba(0, 116, 228, 0.1);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.tp-contact-icon { font-size: 18px; flex-shrink: 0; }
+
+.tp-contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tp-contact-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.tp-contact-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tp-contact-action {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(0, 116, 228, 0.1);
+  border: none;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tp-contact-action:hover {
+  background: rgba(0, 116, 228, 0.2);
+}
+
+/* ── Rate ─────────────────────────────────────── */
+.tp-rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f8fc;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.tp-rate-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.tp-rate-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Action buttons ───────────────────────────── */
+.tp-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tp-action-btn {
+  padding: 11px 10px;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid rgba(0, 116, 228, 0.2);
+  background: rgba(0, 116, 228, 0.05);
+  color: var(--accent);
+  transition: all 0.2s ease;
+}
+
+.tp-action-btn:hover {
+  background: rgba(0, 116, 228, 0.12);
+  border-color: rgba(0, 116, 228, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ── Book button ──────────────────────────────── */
+.tp-book-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 116, 228, 0.35);
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.tp-book-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 116, 228, 0.45);
+}
+
+.tp-book-btn:disabled {
+  background: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+  -webkit-text-fill-color: white;
+}
+
+
+
+/* ── Modal with hidden scrollbar + fade hint ── */
+.tp-modal {
+  background: #ffffff;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: tp-slide-up 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hide scrollbar (WebKit) */
+.tp-modal::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Bottom fade hint ── */
+.tp-modal::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  pointer-events: none;
+
+  /* fade from transparent → white */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    #ffffff 90%
+  );
+}

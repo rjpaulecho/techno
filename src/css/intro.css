@@ -1,69 +1,167 @@
+/* ═══════════════════════════════════════════════
+   🎨  INTRO SCREEN — EDITABLE STYLE GUIDE
+   ═══════════════════════════════════════════════
+
+   QUICK-EDIT CHEATSHEET
+   ─────────────────────
+   Background colour  →  .intro-container  background
+   Glow colour/size   →  .glow  background + width/height
+   Image size         →  .slide-image  width / max-width
+   Gap image→text     →  .slide  gap
+   Text size          →  .slide-text  font-size
+   Text weight        →  .slide-text  font-weight
+   Text spacing       →  .slide-text  letter-spacing
+   Fade speed         →  .slide  transition
+   Hint text style    →  .hint
+   ═══════════════════════════════════════════════ */
+
+
+/* ─── BACKGROUND ─────────────────────────────── */
 .intro-container {
   height: 100vh;
   width: 100%;
+
+  /* ✏️ Change the two colours to shift the background gradient */
   background: radial-gradient(circle at center, #0a0f1c, #000);
+
   display: flex;
+  flex-direction: column;      /* stack image + text vertically */
   justify-content: center;
   align-items: center;
   position: relative;
   cursor: pointer;
   overflow: hidden;
   color: white;
-  font-family: Arial, sans-serif;
+
+  /* ✏️ Swap font family here */
+  font-family: 'Segoe UI', Georgia, sans-serif;
 }
 
+
+/* ─── BACKGROUND GLOW BLOB ───────────────────── */
 .glow {
   position: absolute;
+  pointer-events: none;
+
+  /* ✏️ Increase/decrease to make the glow larger or smaller */
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(120,160,255,0.25), transparent 60%);
+
+  /* ✏️ Change rgba(r,g,b, opacity) to shift glow colour */
+  background: radial-gradient(circle, rgba(120, 160, 255, 0.25), transparent 60%);
+
   filter: blur(80px);
   animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translate(0,0); }
-  50% { transform: translate(40px,-30px); }
+  0%, 100% { transform: translate(0, 0); }
+  /* ✏️ Change these px values to change how far the glow drifts */
+  50%       { transform: translate(40px, -30px); }
 }
 
-.message {
-  font-size: 34px;
-  font-weight: 500;
-  text-align: center;
-  letter-spacing: 1px;
+
+/* ─── SLIDE WRAPPER (image + text together) ─── */
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* ✏️ Controls the vertical space BETWEEN the image and the text */
+  gap: 28px;
+
+  /* ✏️ Limit how wide the whole slide can get */
   max-width: 800px;
-  transition: all 0.25s ease;
+  padding: 0 24px;
+
   z-index: 2;
+
+  /* ✏️ Fade speed — match FADE_DURATION_MS in Intro.tsx if you change it */
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.in {
+.slide.in {
   opacity: 1;
   transform: translateY(0);
 }
 
-.out {
+.slide.out {
   opacity: 0;
+  /* ✏️ Increase px to make slides drift further on exit */
   transform: translateY(10px);
 }
 
+
+/* ─── SLIDE IMAGE ────────────────────────────── */
+
+/* Base styles shared by all three sizes */
+.slide-image {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+
+  /* Smooth size transition between slides */
+  transition: height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Soft glow under the image */
+  filter: drop-shadow(0 4px 32px rgba(120, 160, 255, 0.45));
+
+  /* Bounce-in when a new slide mounts */
+  animation: imgPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes imgPop {
+  from { opacity: 0; transform: scale(0.75) translateY(-12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);      }
+}
+
+/* ✏️ SIZE VARIANTS — change the height values to resize each step */
+
+.slide-image--small {
+  height: 64px;    /* slide 1 — small */
+}
+
+.slide-image--medium {
+  height: 120px;   /* slide 2 — medium */
+}
+
+.slide-image--large {
+  height: 200px;   /* slide 3 — large */
+}
+
+
+/* ─── SLIDE TEXT ─────────────────────────────── */
+.slide-text {
+  margin: 0;
+
+  /* ✏️ Main text size */
+  font-size: 34px;
+
+  /* ✏️ 400 = normal · 500 = medium · 600 = semi-bold · 700 = bold */
+  font-weight: 500;
+
+  text-align: center;
+
+  /* ✏️ Spread between letters (positive = wider, 0 = default) */
+  letter-spacing: 1px;
+
+  /* ✏️ Line height — useful if a slide wraps onto two lines */
+  line-height: 1.4;
+}
+
+
+/* ─── BOTTOM HINT ────────────────────────────── */
 .hint {
   position: absolute;
-  bottom: 40px;
+  bottom: 40px;        /* ✏️ Distance from the very bottom of the screen */
+
+  /* ✏️ Hint text size */
   font-size: 12px;
+
+  /* ✏️ 0 = invisible · 1 = fully visible */
   opacity: 0.35;
+
+  /* ✏️ Space between each letter of the hint */
   letter-spacing: 2px;
-}
-
-
-.message h1 {
-  font-size: 34px;
-  margin: 0;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-.message p {
-  font-size: 14px;
-  opacity: 0.6;
-  margin-top: 10px;
 }

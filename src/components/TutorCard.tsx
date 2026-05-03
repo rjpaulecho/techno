@@ -1,72 +1,53 @@
-import { useState } from "react";
 import type { TutorListing } from "../data/catalogData";
-import BookingModal from "./BookingModal";
 import "../css/catalog.css";
 
-type TutorCardProps = {
+type Props = {
   tutor: TutorListing;
+  onOpen: (tutor: TutorListing) => void;
 };
 
-const TutorCard = ({ tutor }: TutorCardProps) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const stars =
-    "★".repeat(Math.floor(tutor.rating)) +
-    (tutor.rating % 1 >= 0.5 ? "½" : "");
+const TutorCard = ({ tutor, onOpen }: Props) => {
+  const stars = "★".repeat(Math.round(tutor.rating)) + "☆".repeat(5 - Math.round(tutor.rating));
 
   return (
-    <>
-      <div className="tutor-card">
-        {/* Availability badge */}
-        <span className={`tutor-badge ${tutor.available ? "available" : "unavailable"}`}>
-          {tutor.available ? "Available" : "Unavailable"}
-        </span>
+    <div className="tutor-card tutor-card--clickable" onClick={() => onOpen(tutor)}>
+      <span className={`tutor-badge ${tutor.available ? "available" : "unavailable"}`}>
+        {tutor.available ? "Available" : "Unavailable"}
+      </span>
 
-        {/* Photo */}
-        <img src={tutor.image} alt={tutor.name} className="tutor-photo" />
+      <div className="tutor-photo-wrap">
+        <img src={tutor.image} alt={tutor.name} className="tutor-photo" draggable={false} />
+      </div>
 
-        {/* Info */}
-        <div className="tutor-info">
-          <h3 className="tutor-name">{tutor.name}</h3>
-          <p className="tutor-subject">{tutor.subject}</p>
-
-          {/* Rating */}
-          <div className="tutor-rating">
-            <span className="tutor-stars">{stars}</span>
-            <span className="tutor-reviews">
-              {tutor.rating} · {tutor.reviews} reviews
-            </span>
-          </div>
-
-          {/* Service tags */}
-          <div className="tutor-tags">
-            {tutor.services.map((s) => (
-              <span key={s} className="tutor-tag">{s}</span>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="tutor-footer">
-          <span className="tutor-rate">{tutor.rate}</span>
-          <button
-            className="tutor-btn"
-            disabled={!tutor.available}
-            onClick={() => tutor.available && setShowModal(true)}
-          >
-            {tutor.available ? "Book Now" : "Unavailable"}
-          </button>
+      <div className="tutor-info">
+        <h3 className="tutor-name">{tutor.name}</h3>
+        <p className="tutor-subject">{tutor.subject}</p>
+        <div className="tutor-rating">
+          <span className="tutor-stars">{stars}</span>
+          <span className="tutor-reviews">{tutor.rating} ({tutor.reviews} reviews)</span>
         </div>
       </div>
 
-      {/* Booking Modal */}
-      {showModal && (
-        <BookingModal
-          tutor={tutor}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-    </>
+      <div className="tutor-tags">
+        {tutor.services.map((s) => (
+          <span key={s} className="tutor-tag">{s}</span>
+        ))}
+      </div>
+
+      <div className="tutor-footer">
+        <span className="tutor-rate">{tutor.rate}</span>
+        <button
+          className="tutor-btn"
+          disabled={!tutor.available}
+          onClick={(e) => {
+            e.stopPropagation(); // prevent double-open from card click
+            onOpen(tutor);
+          }}
+        >
+          {tutor.available ? "View Profile" : "Unavailable"}
+        </button>
+      </div>
+    </div>
   );
 };
 

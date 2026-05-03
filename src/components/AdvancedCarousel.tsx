@@ -4,8 +4,12 @@ import { tutorsData } from "../data/devs";
 import type { Tutor } from "../data/devs";
 import "../css/carousel.css";
 
-const AdvancedCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+interface AdvancedCarouselProps {
+  initialIndex?: number;
+}
+
+const AdvancedCarousel = ({ initialIndex = 0 }: AdvancedCarouselProps) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState<Tutor | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -105,13 +109,10 @@ const AdvancedCarousel = () => {
       />
 
       <div className="carousel-wrapper">
-        {/* HEADER — grouped with carousel */}
         <div className="carousel-header">
-       
           <p>Click on any expert card to view their profile</p>
         </div>
 
-        {/* CAROUSEL STAGE — height matches card so no dead space below */}
         <div
           className="carousel-section"
           style={{ height: `${cardSize.height}px` }}
@@ -174,7 +175,6 @@ const AdvancedCarousel = () => {
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

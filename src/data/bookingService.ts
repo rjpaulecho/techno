@@ -11,6 +11,7 @@ export interface Booking {
   message: string;
   totalCost: number;
   status: "upcoming" | "completed" | "cancelled";
+  paymentMethod: string; // e.g. "Card", "GCash", "Maya", "Cash"
   createdAt: string;
 }
 
@@ -49,5 +50,23 @@ export const bookingService = {
   remove(id: string): void {
     const all = this.getAll().filter((b) => b.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  },
+
+  /** Marks any "upcoming" booking as "completed" if its date+time has passed. */
+  autoComplete(): void {
+    const now = new Date();
+    let changed = false;
+    const all = this.getAll().map((b) => {
+      if (b.status !== "upcoming") return b;
+      // Combine date + time into a comparable Date (assume 1-hour session minimum)
+      const sessionEnd = new Date(`${b.date}T${b.time}`);
+      sessionEnd.setHours(sessionEnd.getHours() + b.duration);
+      if (sessionEnd <= now) {
+        changed = true;
+        return { ...b, status: "completed" as const };
+      }
+      return b;
+    });
+    if (changed) localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   },
 };

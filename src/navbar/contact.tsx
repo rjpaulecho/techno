@@ -1,8 +1,13 @@
+import { useLocation } from "react-router-dom";
 import AdvancedCarousel from "../components/AdvancedCarousel";
 import "../css/style.css";
 import "../css/carousel.css";
 
 function Contact() {
+  // tutorIndex is set by DevModal when the user clicks "View Full Profile"
+  const { state } = useLocation();
+  const initialIndex: number = state?.tutorIndex ?? 0;
+
   return (
     <div className="contact-page">
 
@@ -19,15 +24,8 @@ function Contact() {
       </section>
 
       {/* ── Carousel ─────────────────────────────── */}
-      {/*
-        contact-carousel-wrap has isolation:isolate + enough padding-top
-        so the 3D cards (which overflow upward due to translateZ + perspective)
-        never bleed into the hero text above.
-        The inner carousel-header ("OUR EXPERTsss") is hidden via CSS
-        since the contact-hero already introduces the section.
-      */}
-      <div className="contact-carousel-wrap">
-        <AdvancedCarousel />
+      <div className="contact-carousel-wrap" id="team-carousel">
+        <AdvancedCarousel initialIndex={initialIndex} />
       </div>
 
       {/* ── Reach Out ────────────────────────────── */}

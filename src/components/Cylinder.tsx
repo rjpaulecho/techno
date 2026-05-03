@@ -216,7 +216,7 @@ const rotate = useCallback(
 
             {/* CTA — navigates to catalog filtered to this tutor */}
             <button className="info-cta" onClick={handleViewProfile}>
-              View Profile
+              View In Catalog
             </button>
 
             {/* Index counter */}
