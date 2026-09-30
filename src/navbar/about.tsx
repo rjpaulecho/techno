@@ -15,7 +15,7 @@ const values = [
 const stats = [
   { value: "6+",   label: "Expert Tutors"    },
   { value: "6",    label: "Subjects Covered" },
-  { value: "₱150", label: "Starting Rate"    },
+  { value: "₱25", label: "Starting Rate"    },
   { value: "100%", label: "Student-Focused"  },
 ];
 

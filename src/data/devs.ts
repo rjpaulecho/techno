@@ -105,20 +105,7 @@ export const tutorsData: Tutor[] = [
       twitter: "https://www.facebook.com/ralph.villon",
     },
   },
-  {
-    id: 6,
-    name: "Bilway",
-    role: "Encoder",
-    image: "pics/bilway.jpg",
-    shortDesc: "Contgact me for all your encoding needs",
-    bio: "Bilway is a dedicated encoder who brings creativity and precision to every project.",
-    expertise: ["Business Strategy", "Marketing", "Entrepreneurship", "Finance", "Leadership"],
-    contact: {
-      email: "bilway@tutofriends.ph",
-      facebook: "https://facebook.com/amongus",
-      twitter: "https://www.facebook.com/ralph.villon",
-    },
-  },
+
 ];
 
 /* ─────────────────────────────────────────────────────────

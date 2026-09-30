@@ -53,10 +53,10 @@ const imagesData: ImageData[] = [
   },
   {
     id: 6,
-    title: "RALPH",
+    title: "Bilway",
     description:
-      "Versatile developer with full-stack capabilities. Ralph excels at turning concepts into production-ready applications.",
-    image: "pics/ral.jpg",
+      "Versatile developer with full-stack capabilities. Bilway excels at turning concepts into production-ready applications.",
+    image: "pics/bilway.jpg",
     role: "WEB DEVELOPER",
   },
 ];
