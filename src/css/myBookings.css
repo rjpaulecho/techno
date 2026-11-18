@@ -328,3 +328,153 @@
     padding: 14px 20px;
   }
 }
+
+
+
+/* ==========================================
+   DARK MODE — MY BOOKINGS
+   Uses the global TutoFriends data-theme.
+========================================== */
+
+[data-theme="dark"] .mybk-page {
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+[data-theme="dark"] .mybk-header h1,
+[data-theme="dark"] .mybk-tutor-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .mybk-header p,
+[data-theme="dark"] .mybk-stat-label,
+[data-theme="dark"] .mybk-empty p,
+[data-theme="dark"] .mybk-empty-sub {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .mybk-stats,
+[data-theme="dark"] .mybk-card {
+  background: var(--panel-bg);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] .mybk-stat-divider {
+  background: var(--border);
+}
+
+[data-theme="dark"] .mybk-filter-count {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* Filter buttons imported from services.css */
+[data-theme="dark"] .mybk-page .filter-btn:not(.active) {
+  background: #202735;
+  color: #cbd5e1;
+  border-color: #354155;
+}
+
+[data-theme="dark"] .mybk-page .filter-btn:not(.active):hover {
+  background: #29384d;
+  color: #ffffff;
+  border-color: #3989df;
+}
+
+[data-theme="dark"] .mybk-page .filter-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* Booking details */
+[data-theme="dark"] .mybk-detail {
+  background: #202735;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .mybk-cost {
+  background: rgba(0, 116, 228, 0.18);
+  color: #80bdff;
+}
+
+[data-theme="dark"] .mybk-message {
+  background: #202735;
+  color: #cbd5e1;
+  border-left-color: #3989df;
+}
+
+[data-theme="dark"] .mybk-avatar {
+  border-color: #354155;
+}
+
+/* Payment details section */
+[data-theme="dark"] .mybk-card section[aria-label^="Payment for booking"] {
+  background: #1d2533 !important;
+  border-color: #354155 !important;
+}
+
+[data-theme="dark"] .mybk-card section strong {
+  color: #e5edf8 !important;
+}
+
+[data-theme="dark"] .mybk-card section div[style*="space-between"] {
+  color: #e5edf8;
+}
+
+[data-theme="dark"] .mybk-card section div[style*="flex-wrap"] {
+  color: #cbd5e1 !important;
+}
+
+/* Payment badge */
+[data-theme="dark"] .mybk-payment-badge {
+  background: #263a55 !important;
+  color: #a9d2ff !important;
+}
+
+/* Buttons */
+[data-theme="dark"] .mybk-cancel-btn {
+  background: transparent;
+  border-color: #e16b75;
+  color: #ff929b;
+}
+
+[data-theme="dark"] .mybk-cancel-btn:hover {
+  background: #7f2933;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .mybk-remove-btn {
+  background: #202735;
+  border-color: #465267;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .mybk-remove-btn:hover {
+  background: #303d50;
+  color: #ffffff;
+}
+
+/* Links and empty states */
+[data-theme="dark"] .mybk-empty a {
+  color: #69b4ff;
+}
+
+[data-theme="dark"] .mybk-empty a:hover {
+  color: #a4d2ff;
+}
+
+/* Smooth theme transition */
+.mybk-page,
+.mybk-stats,
+.mybk-card,
+.mybk-detail,
+.mybk-message {
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
