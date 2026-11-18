@@ -626,3 +626,348 @@
     padding: 20px 16px;
   }
 }
+
+
+/* =========================================
+   TUTOfriends PROFILE - THEME FIX
+   Brand: Black, White, Blue
+   ========================================= */
+
+.prof-page {
+  background: var(--bg, #f0f2f7);
+  color: var(--text-primary, #111827);
+}
+
+/* Blue-only hero banner */
+.prof-banner {
+  background: linear-gradient(
+    135deg,
+    #080b12 0%,
+    #003d80 55%,
+    #0074e4 100%
+  );
+}
+
+.prof-banner-glow {
+  background: radial-gradient(
+    circle,
+    rgba(0, 116, 228, 0.3),
+    transparent 65%
+  );
+}
+
+/* Avatar */
+.prof-avatar-initials {
+  background: linear-gradient(
+    135deg,
+    #0074e4,
+    #0056b3
+  );
+}
+
+/* Tabs */
+.prof-tabs {
+  background: var(--panel-bg, #ffffff);
+  border: 1px solid var(--border, rgba(0,0,0,0.07));
+  box-shadow: var(--shadow);
+}
+
+.prof-tab {
+  color: var(--text-muted, #6b7280);
+}
+
+.prof-tab:hover {
+  background: var(--bg, #f0f2f7);
+  color: var(--text-primary, #111827);
+}
+
+.prof-tab.active {
+  background: var(--accent, #0074e4);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 116, 228, 0.25);
+}
+
+/* Main content */
+.prof-panel {
+  background: var(--panel-bg, #ffffff);
+  color: var(--text-primary, #111827);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.prof-section-title,
+.prof-info-value,
+.prof-bk-num,
+.prof-recent-title,
+.prof-bk-name,
+.prof-bk-cost {
+  color: var(--text-primary, #111827);
+}
+
+.prof-section-sub,
+.prof-info-label,
+.prof-char-count,
+.prof-bk-date,
+.prof-bk-more {
+  color: var(--text-muted, #6b7280);
+}
+
+/* Information cards */
+.prof-info-item,
+.prof-avatar-edit-row,
+.prof-bk-stats,
+.prof-bk-row {
+  background: var(--bg, #f0f2f7);
+}
+
+.prof-info-label {
+  color: var(--text-muted, #6b7280);
+}
+
+.prof-empty-field {
+  color: var(--text-muted, #6b7280);
+}
+
+/* Edit button */
+.prof-edit-shortcut {
+  background: var(--panel-bg, #ffffff);
+  color: var(--text-primary, #111827);
+  border-color: var(--border);
+}
+
+.prof-edit-shortcut:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Form labels and fields */
+.prof-avatar-hint,
+.prof-label {
+  color: var(--text-primary, #111827);
+}
+
+.prof-avatar-hint-sub {
+  color: var(--text-muted, #6b7280);
+}
+
+.prof-input,
+.prof-textarea {
+  background: var(--panel-bg, #ffffff);
+  color: var(--text-primary, #111827);
+  border-color: var(--border);
+}
+
+.prof-input::placeholder,
+.prof-textarea::placeholder {
+  color: var(--text-muted, #6b7280);
+}
+
+.prof-input:focus,
+.prof-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 116, 228, 0.12);
+}
+
+/* Save button */
+.prof-save-btn {
+  background: var(--accent, #0074e4);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 116, 228, 0.25);
+}
+
+.prof-save-btn:hover:not(:disabled) {
+  background: #005fc0;
+}
+
+.prof-save-btn:disabled {
+  background: #9ca3af;
+}
+
+/* Success stays within the blue brand palette */
+.prof-save-btn--success {
+  background: #005fc0 !important;
+  box-shadow: 0 4px 14px rgba(0, 116, 228, 0.25) !important;
+}
+
+/* Password strength */
+.prof-strength-bar {
+  background: var(--border);
+}
+
+.prof-strength-label {
+  color: var(--text-muted);
+}
+
+/* Booking information */
+.prof-bk-stat-div {
+  background: var(--border);
+}
+
+.prof-bk-row:hover {
+  background: var(--panel-bg);
+}
+
+.prof-bk-subject,
+.prof-bk-link {
+  color: var(--accent);
+}
+
+/* =========================================
+   DARK MODE
+   ========================================= */
+
+[data-theme="dark"] .prof-page {
+  background: #0d0f16;
+  color: #eef0f7;
+}
+
+[data-theme="dark"] .prof-banner {
+  background: linear-gradient(
+    135deg,
+    #05070c 0%,
+    #071d38 55%,
+    #004b99 100%
+  );
+}
+
+[data-theme="dark"] .prof-tabs,
+[data-theme="dark"] .prof-panel {
+  background: #161922;
+  border-color: rgba(255,255,255,0.07);
+}
+
+[data-theme="dark"] .prof-tab {
+  color: #8b92a8;
+}
+
+[data-theme="dark"] .prof-tab:hover {
+  background: #202431;
+  color: #eef0f7;
+}
+
+[data-theme="dark"] .prof-tab.active {
+  background: #0074e4;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .prof-section-title,
+[data-theme="dark"] .prof-info-value,
+[data-theme="dark"] .prof-bk-num,
+[data-theme="dark"] .prof-recent-title,
+[data-theme="dark"] .prof-bk-name,
+[data-theme="dark"] .prof-bk-cost {
+  color: #eef0f7;
+}
+
+[data-theme="dark"] .prof-section-sub,
+[data-theme="dark"] .prof-info-label,
+[data-theme="dark"] .prof-char-count,
+[data-theme="dark"] .prof-bk-date,
+[data-theme="dark"] .prof-bk-more,
+[data-theme="dark"] .prof-avatar-hint-sub {
+  color: #8b92a8;
+}
+
+[data-theme="dark"] .prof-info-item,
+[data-theme="dark"] .prof-avatar-edit-row,
+[data-theme="dark"] .prof-bk-stats,
+[data-theme="dark"] .prof-bk-row {
+  background: #0d0f16;
+}
+
+[data-theme="dark"] .prof-empty-field {
+  color: #8b92a8;
+}
+
+[data-theme="dark"] .prof-edit-shortcut {
+  background: #161922;
+  color: #eef0f7;
+  border-color: rgba(255,255,255,0.12);
+}
+
+[data-theme="dark"] .prof-edit-shortcut:hover {
+  border-color: #0074e4;
+  color: #60aaff;
+}
+
+[data-theme="dark"] .prof-avatar-hint,
+[data-theme="dark"] .prof-label {
+  color: #eef0f7;
+}
+
+[data-theme="dark"] .prof-input,
+[data-theme="dark"] .prof-textarea {
+  background: #0d0f16;
+  color: #eef0f7;
+  border-color: rgba(255,255,255,0.12);
+}
+
+[data-theme="dark"] .prof-input::placeholder,
+[data-theme="dark"] .prof-textarea::placeholder {
+  color: #737b91;
+}
+
+[data-theme="dark"] .prof-input:focus,
+[data-theme="dark"] .prof-textarea:focus {
+  border-color: #0074e4;
+  box-shadow: 0 0 0 3px rgba(0, 116, 228, 0.18);
+}
+
+[data-theme="dark"] .prof-save-btn {
+  background: #0074e4;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .prof-save-btn:hover:not(:disabled) {
+  background: #1685f5;
+}
+
+[data-theme="dark"] .prof-save-btn--success {
+  background: #005fc0 !important;
+}
+
+[data-theme="dark"] .prof-strength-bar {
+  background: #292e3b;
+}
+
+[data-theme="dark"] .prof-strength-label {
+  color: #8b92a8;
+}
+
+[data-theme="dark"] .prof-bk-stat-div {
+  background: rgba(255,255,255,0.12);
+}
+
+[data-theme="dark"] .prof-bk-row:hover {
+  background: #202431;
+}
+
+[data-theme="dark"] .prof-bk-subject,
+[data-theme="dark"] .prof-bk-link {
+  color: #60aaff;
+}
+
+[data-theme="dark"] .prof-bk-empty {
+  color: #8b92a8;
+}
+
+/* Keyboard accessibility */
+.prof-tab:focus-visible,
+.prof-save-btn:focus-visible,
+.prof-edit-shortcut:focus-visible,
+.prof-input:focus-visible,
+.prof-textarea:focus-visible {
+  outline: 3px solid var(--accent, #0074e4);
+  outline-offset: 3px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .prof-page {
+    padding-bottom: 40px;
+  }
+
+  .prof-tabs {
+    width: calc(100% - 24px);
+  }
+}

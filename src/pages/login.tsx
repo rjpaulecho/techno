@@ -1,108 +1,336 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/pages/login.tsx
+
+import {
+  useEffect,
+  useState,
+  type FormEvent,
+} from "react";
+
 import { userService } from "../data/userService";
 import "../css/login.css";
+
+// ==========================================
+// TYPES
+// ==========================================
 
 type Props = {
   onLogin: () => void;
 };
 
-const MIN_PASSWORD_LENGTH = 6;
+type DevAccount =
+  | "student"
+  | "ralph"
+  | "admin";
 
-const Login = ({ onLogin }: Props) => {
-  const navigate = useNavigate();
+type DevStatus = {
+  success?: boolean;
+  enabled?: boolean;
+  adminEnabled?: boolean;
+};
 
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+type DevLoginResult = {
+  success?: boolean;
+  message?: string;
+};
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+// ==========================================
+// LOGIN COMPONENT
+// ==========================================
+
+export default function Login({ onLogin }: Props) {
+  // ========================================
+  // NORMAL LOGIN STATES
+  // ========================================
+
+  const [isLogin, setIsLogin] =
+    useState(true);
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [name, setName] =
+    useState("");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [busy, setBusy] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  // ========================================
+  // DEVELOPMENT LOGIN STATES
+  // ========================================
+
+  const [devEnabled, setDevEnabled] =
+    useState(false);
+
+  const [
+    devAdminEnabled,
+    setDevAdminEnabled,
+  ] = useState(false);
+
+  const [devBusy, setDevBusy] =
+    useState<DevAccount | null>(null);
+
+  // ========================================
+  // CHECK DEVELOPMENT LOGIN STATUS
+  // ========================================
+
+  useEffect(() => {
+    const controller =
+      new AbortController();
+
+    async function checkDevMode() {
+      try {
+        const response = await fetch(
+          "/api/dev-login/enabled",
+          {
+            method: "GET",
+            credentials: "same-origin",
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const result =
+          (await response.json()) as DevStatus;
+
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setDevEnabled(
+          result.enabled === true
+        );
+
+        setDevAdminEnabled(
+          result.enabled === true &&
+          result.adminEnabled === true
+        );
+      } catch {
+        // Development buttons stay hidden
+        // if the development API is unavailable.
+      }
+    }
+
+    void checkDevMode();
+
+    return () => controller.abort();
+  }, []);
+
+  // ========================================
+  // NORMAL LOGIN / REGISTRATION
+  // ========================================
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    if (busy || devBusy) {
+      return;
+    }
+
     setError("");
 
-    if (!email || !password || (!isLogin && !name)) {
+    if (
+      !email.trim() ||
+      !password ||
+      (!isLogin && !name.trim())
+    ) {
       setError("Please fill in all fields.");
       return;
     }
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+    setBusy(true);
+
+    try {
+      if (isLogin) {
+        await userService.login(
+          email.trim(),
+          password
+        );
+
+        // app.tsx restores the server session
+        // and redirects according to role.
+        onLogin();
+      } else {
+        if (password.length < 8) {
+          throw new Error(
+            "Password must be at least 8 characters."
+          );
+        }
+
+        await userService.register(
+          name.trim(),
+          email.trim(),
+          password
+        );
+
+        setIsLogin(true);
+        setName("");
+        setPassword("");
+
+        window.alert(
+          "Account created successfully. Please log in."
+        );
+      }
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Authentication failed."
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // ========================================
+  // INSTANT TEST ACCOUNT LOGIN
+  // ========================================
+
+  async function quickLogin(
+    account: DevAccount
+  ) {
+    if (
+      !devEnabled ||
+      busy ||
+      devBusy ||
+      (account === "admin" &&
+        !devAdminEnabled)
+    ) {
       return;
     }
 
-    if (isLogin) {
-      if (!userService.login(email, password)) {
-        setError("Incorrect username/email or password.");
-        return;
-      }
-
-      onLogin();
-
-      const user = userService.get();
-
-      if (user?.role === "tutor") {
-        navigate("/tutor-dashboard");
-      } else {
-        navigate("/");
-      }
-    } else {
-      userService.register(name.trim(), email.trim(), password);
-
-      setError("");
-      alert("Account created! You can now log in.");
-      setIsLogin(true);
-      setName("");
-      setEmail("");
-      setPassword("");
-    }
-  };
-
-  const handleGoogleLogin = () =>
-    alert("Google login — wire up your OAuth provider here.");
-
-  const handleFacebookLogin = () =>
-    alert("Facebook login — wire up your OAuth provider here.");
-
-  const switchMode = () => {
-    setIsLogin(!isLogin);
+    setDevBusy(account);
     setError("");
+
+    try {
+      const response = await fetch(
+        "/api/dev-login",
+        {
+          method: "POST",
+          credentials: "same-origin",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            account,
+          }),
+        }
+      );
+
+      const result =
+        (await response.json()) as DevLoginResult;
+
+      if (
+        !response.ok ||
+        !result.success
+      ) {
+        throw new Error(
+          result.message ||
+            "Instant login failed."
+        );
+      }
+
+      // Force app.tsx to check the new
+      // authenticated cookie on /api/auth/me.
+      // Role is verified by the server.
+
+      window.location.replace("/");
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Instant login failed."
+      );
+
+      setDevBusy(null);
+    }
+  }
+
+  // ========================================
+  // LOGIN / REGISTER SWITCH
+  // ========================================
+
+  function switchMode() {
+    if (busy || devBusy) return;
+
+    setIsLogin((current) => !current);
     setPassword("");
     setShowPassword(false);
-  };
+    setError("");
+  }
 
-  const pwTooShort =
-    password.length > 0 && password.length < MIN_PASSWORD_LENGTH;
+  const disabled =
+    busy || devBusy !== null;
+
+  // ========================================
+  // RENDER
+  // ========================================
 
   return (
     <div className="login-container cinematic-fade-in">
       <div className="login-glow" />
 
+      {/* TITLE */}
+
       <h1 className="login-title">
         {isLogin ? (
           <>
-            <span className="small-text">welcome to</span>
-            <span className="brand-name">TutoFriends</span>
+            <span className="small-text">
+              welcome to
+            </span>
+
+            <span className="brand-name">
+              TutoFriends
+            </span>
           </>
         ) : (
-          <span className="create-account">Create Account</span>
+          <span className="create-account">
+            Create Account
+          </span>
         )}
       </h1>
 
-      <form onSubmit={handleSubmit} className="login-form glass-card">
+      {/* LOGIN FORM */}
+
+      <form
+        className="login-form glass-card"
+        onSubmit={(event) =>
+          void handleSubmit(event)
+        }
+      >
         <p className="login-info">
           {isLogin
             ? "Welcome back. Continue your journey."
-            : "Create your account to begin."}
+            : "Create your account to get started."}
         </p>
+
+        {/* GOOGLE AND FACEBOOK BUTTONS */}
 
         <div className="social-buttons">
           <button
             type="button"
             className="social-btn social-btn--google"
-            onClick={handleGoogleLogin}
+            onClick={() =>
+              setError(
+                "Google login is not configured yet."
+              )
+            }
           >
             <svg
               className="social-icon"
@@ -111,19 +339,22 @@ const Login = ({ onLogin }: Props) => {
             >
               <path
                 fill="#EA4335"
-                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
               />
+
               <path
                 fill="#4285F4"
                 d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
               />
+
               <path
                 fill="#FBBC05"
-                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
               />
+
               <path
                 fill="#34A853"
-                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
               />
             </svg>
 
@@ -133,7 +364,11 @@ const Login = ({ onLogin }: Props) => {
           <button
             type="button"
             className="social-btn social-btn--facebook"
-            onClick={handleFacebookLogin}
+            onClick={() =>
+              setError(
+                "Facebook login is not configured yet."
+              )
+            }
           >
             <svg
               className="social-icon"
@@ -152,42 +387,88 @@ const Login = ({ onLogin }: Props) => {
 
         <div className="divider">
           <span className="divider-line" />
-          <span className="divider-text">or</span>
+          <span className="divider-text">
+            or
+          </span>
           <span className="divider-line" />
         </div>
+
+        {/* REGISTRATION NAME */}
 
         {!isLogin && (
           <input
             type="text"
-            placeholder="Full Name"
             className="login-input"
+            placeholder="Full Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            disabled={disabled}
+            required
+            onChange={(event) =>
+              setName(event.target.value)
+            }
           />
         )}
 
+        {/* EMAIL OR USERNAME */}
+
         <input
           type={isLogin ? "text" : "email"}
-          placeholder={isLogin ? "Email or Username" : "Email"}
           className="login-input"
+          placeholder={
+            isLogin
+              ? "Email or Username"
+              : "Email"
+          }
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          disabled={disabled}
+          required
+          autoComplete={
+            isLogin
+              ? "username"
+              : "email"
+          }
+          onChange={(event) =>
+            setEmail(event.target.value)
+          }
         />
+
+        {/* PASSWORD */}
 
         <div className="password-wrapper">
           <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            type={
+              showPassword
+                ? "text"
+                : "password"
+            }
             className="login-input password-input"
+            placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            disabled={disabled}
+            required
+            autoComplete={
+              isLogin
+                ? "current-password"
+                : "new-password"
+            }
+            onChange={(event) =>
+              setPassword(event.target.value)
+            }
           />
 
           <button
             type="button"
             className="eye-btn"
-            onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-label={
+              showPassword
+                ? "Hide password"
+                : "Show password"
+            }
+            onClick={() =>
+              setShowPassword(
+                (current) => !current
+              )
+            }
           >
             {showPassword ? (
               <svg
@@ -218,38 +499,158 @@ const Login = ({ onLogin }: Props) => {
           </button>
         </div>
 
-        <p
-          className={`password-hint ${
-            pwTooShort ? "password-hint--warn" : ""
-          }`}
+        {/* ERROR MESSAGE */}
+
+        {error && (
+          <p
+            className="form-error"
+            role="alert"
+          >
+            ⚠ {error}
+          </p>
+        )}
+
+        {/* NORMAL SUBMIT */}
+
+        <button
+          type="submit"
+          className="login-button"
+          disabled={disabled}
         >
-          {pwTooShort
-            ? `⚠ ${
-                MIN_PASSWORD_LENGTH - password.length
-              } more character${
-                MIN_PASSWORD_LENGTH - password.length > 1 ? "s" : ""
-              } needed`
-            : `Minimum ${MIN_PASSWORD_LENGTH} characters`}
-        </p>
-
-        {error && <p className="form-error">⚠ {error}</p>}
-
-        <button type="submit" className="login-button">
-          {isLogin ? "Login" : "Create Account"}
+          {busy
+            ? "Please wait..."
+            : isLogin
+              ? "Login"
+              : "Create Account"}
         </button>
+
+        {/* REGISTER LINK */}
 
         <button
           type="button"
           className="register-button"
+          disabled={disabled}
           onClick={switchMode}
         >
           {isLogin
             ? "Don't have an account? Register"
             : "Back to Login"}
         </button>
+
+        {/* ==================================
+            DEVELOPMENT INSTANT LOGIN
+        ================================== */}
+
+        {devEnabled && isLogin && (
+          <div
+            style={{
+              marginTop: 16,
+              paddingTop: 16,
+              borderTop:
+                "1px solid rgba(255,255,255,0.15)",
+              display: "grid",
+              gap: 9,
+            }}
+          >
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: 1,
+                color: "#fbbf24",
+              }}
+            >
+              DEVELOPMENT TEST ACCOUNTS
+            </div>
+
+            {/* TEST STUDENT */}
+
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={() =>
+                void quickLogin("student")
+              }
+              style={{
+                padding: 12,
+                border: "none",
+                borderRadius: 9,
+                background: "#2563eb",
+                color: "white",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {devBusy === "student"
+                ? "Signing in..."
+                : "Login as Test Student"}
+            </button>
+
+            {/* RALPH */}
+
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={() =>
+                void quickLogin("ralph")
+              }
+              style={{
+                padding: 12,
+                border: "none",
+                borderRadius: 9,
+                background: "#059669",
+                color: "white",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {devBusy === "ralph"
+                ? "Signing in..."
+                : "Login as Ralph (Tutor)"}
+            </button>
+
+            {/* ADMIN */}
+
+            {devAdminEnabled && (
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={() =>
+                  void quickLogin("admin")
+                }
+                style={{
+                  padding: 12,
+                  border: "none",
+                  borderRadius: 9,
+                  background: "#7c3aed",
+                  color: "white",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                {devBusy === "admin"
+                  ? "Signing in..."
+                  : "Login as Admin"}
+              </button>
+            )}
+
+            <p
+              style={{
+                margin: 0,
+                textAlign: "center",
+                fontSize: 11,
+                color:
+                  "rgba(255,255,255,0.65)",
+              }}
+            >
+              Local testing only.
+              These shortcuts are disabled
+              in production.
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );
-};
-
-export default Login;
+}

@@ -1,0 +1,276 @@
+
+/* TutoFriends transaction screens */
+.tf-tx {
+  --tx-card: var(--panel-bg, #ffffff);
+  --tx-text: var(--text-primary, #111827);
+  --tx-muted: var(--text-muted, #6b7280);
+  --tx-border: var(--border, rgba(0,0,0,.09));
+
+  color: var(--tx-text);
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 30px 16px 55px;
+}
+
+.tf-tx * {
+  box-sizing: border-box;
+}
+
+.tf-tx-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.tf-tx-eyebrow {
+  color: #0074e4;
+  font-size: 12px;
+  letter-spacing: .12em;
+  font-weight: 700;
+}
+
+.tf-tx h1 {
+  color: var(--tx-text);
+  font-size: clamp(1.6rem,3vw,2.2rem);
+  margin: 8px 0;
+}
+
+.tf-tx p,
+.tf-tx-note {
+  color: var(--tx-muted);
+}
+
+.tf-tx-head p {
+  margin: 0;
+}
+
+.tf-tx-tabs {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.tf-tx-tabs button,
+.tf-tx-quiet {
+  border: 1px solid var(--tx-border);
+  border-radius: 11px;
+  padding: 11px 17px;
+  background: var(--tx-card);
+  color: var(--tx-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.tf-tx-tabs button.selected {
+  background: #0074e4;
+  color: #fff;
+  border-color: #0074e4;
+  font-weight: 700;
+}
+
+.tf-tx-note {
+  font-size: 13px;
+  margin: 0 0 20px;
+  line-height: 1.55;
+}
+
+.tf-tx-search {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--tx-text);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.tf-tx-search input {
+  background: var(--tx-card);
+  color: var(--tx-text);
+  border: 1px solid var(--tx-border);
+  border-radius: 10px;
+  padding: 12px 15px;
+  font: inherit;
+  width: 100%;
+}
+
+.tf-tx-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%,400px),1fr)
+  );
+  gap: 17px;
+}
+
+.tf-tx-ticket {
+  padding: 22px;
+  background: var(--tx-card);
+  color: var(--tx-text);
+  border: 1px solid var(--tx-border);
+  border-radius: 18px;
+  box-shadow: 0 5px 18px #0000000b;
+  min-width: 0;
+}
+
+.tf-tx-ticket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tf-tx-ticket-top strong {
+  display: block;
+  color: var(--tx-text);
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.tf-tx-ticket-top span:not(.tf-tx-status) {
+  display: block;
+  font-size: 12px;
+  color: var(--tx-muted);
+}
+
+.tf-tx-status {
+  display: inline-flex;
+  border-radius: 100px;
+  padding: 7px 10px;
+  background: rgba(0,116,228,.12);
+  color: #0074e4;
+  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tf-tx-status.paid,
+.tf-tx-status.completed {
+  background: rgba(0,116,228,.14);
+  color: #0074e4;
+}
+
+.tf-tx-status.pending_verification,
+.tf-tx-status.refund_pending {
+  background: rgba(107,114,128,.16);
+  color: var(--tx-text);
+}
+
+.tf-tx-status.refunded,
+.tf-tx-status.cancelled {
+  background: rgba(107,114,128,.14);
+  color: var(--tx-muted);
+}
+
+.tf-tx-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px 17px;
+}
+
+.tf-tx-grid div {
+  min-width: 0;
+}
+
+.tf-tx-grid small,
+.tf-tx-ref {
+  display: block;
+  color: var(--tx-muted);
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.tf-tx-grid span {
+  overflow-wrap: anywhere;
+  color: var(--tx-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tf-tx-ref {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  margin: 16px 0 0;
+}
+
+.tf-tx-demo {
+  color: var(--tx-text);
+  background: rgba(0,116,228,.10);
+  border: 1px solid rgba(0,116,228,.18);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tf-tx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.tf-tx-primary {
+  font: inherit;
+  font-weight: 700;
+  background: #0074e4;
+  color: white;
+  border: 1px solid #0074e4;
+  border-radius: 10px;
+  padding: 11px 15px;
+  cursor: pointer;
+}
+
+.tf-tx button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.tf-tx-error,
+.tf-tx-success,
+.tf-tx-empty {
+  padding: 15px 18px;
+  border-radius: 11px;
+}
+
+.tf-tx-error {
+  color: #dc2626;
+  background: rgba(220,38,38,.09);
+  border: 1px solid rgba(220,38,38,.2);
+}
+
+.tf-tx-success {
+  color: var(--tx-text);
+  background: rgba(0,116,228,.10);
+  border: 1px solid rgba(0,116,228,.2);
+}
+
+.tf-tx-empty {
+  color: var(--tx-muted);
+  border: 1px dashed var(--tx-border);
+  text-align: center;
+}
+
+@media (max-width:600px) {
+  .tf-tx-ticket {
+    padding: 16px;
+  }
+
+  .tf-tx-ticket-top {
+    flex-wrap: wrap;
+  }
+
+  .tf-tx-actions > * {
+    flex: 1;
+  }
+
+  .tf-tx-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,154 @@
+/* src/css/adminEmbedded.css */
+
+/* ==========================================
+   SHARED ADMIN LAYOUT
+========================================== */
+
+.tf-admin-shell {
+  min-height: 100vh;
+}
+
+/* Permanent sidebar on desktop */
+
+.tf-admin-shell > .ad-sidebar {
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+  min-height: 0;
+
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.tf-admin-shell > .tf-admin-content {
+  min-width: 0;
+  flex: 1;
+}
+
+/* LOGOUT ERROR */
+
+.tf-admin-logout-error {
+  margin: 10px 0 0;
+
+  color: #b91c1c;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   EMBED EXISTING ADMIN DASHBOARD
+========================================== */
+
+/*
+   AdminDashboard.tsx currently contains
+   its own layout and sidebar.
+
+   Hide ONLY its duplicate sidebar.
+   The shared sidebar remains visible.
+*/
+
+.tf-admin-shell
+  > .tf-admin-content
+  > .ad-layout {
+  display: block;
+  min-height: 0;
+  background: transparent;
+}
+
+.tf-admin-shell
+  > .tf-admin-content
+  > .ad-layout
+  > .ad-sidebar {
+  display: none;
+}
+
+/* Remove duplicate dashboard padding */
+
+.tf-admin-shell
+  > .tf-admin-content
+  > .ad-layout
+  > .ad-main {
+  padding: 0;
+  min-width: 0;
+}
+
+/* ==========================================
+   EMBED PAYMENT VERIFICATION
+========================================== */
+
+/*
+   Payment Verification originally used
+   a full-screen standalone design.
+
+   Embed it into the Admin Dashboard
+   without changing Quick Reject.
+*/
+
+.tf-admin-shell
+  > .tf-admin-content
+  > .ap-page {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* Sidebar already has a logout button. */
+
+.tf-admin-shell
+  > .tf-admin-content
+  > .ap-page
+  .ap-header-actions
+  .ap-outline {
+  display: none;
+}
+
+/* ==========================================
+   EMBED PLATFORM EARNINGS
+========================================== */
+
+/*
+   Admin Earnings uses inline padding
+   designed for a separate page.
+
+   Remove that full-screen spacing only
+   inside the shared admin layout.
+*/
+
+.tf-admin-shell
+  > .tf-admin-content
+  > main:not(.ad-main) {
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Hide old Back to Dashboard link */
+
+.tf-admin-shell
+  > .tf-admin-content
+  > main:not(.ad-main)
+  > header
+  a[href="/admin/dashboard"] {
+  display: none !important;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 760px) {
+  .tf-admin-shell > .ad-sidebar {
+    position: static;
+
+    height: auto;
+    width: 100%;
+    min-height: 0;
+
+    overflow: visible;
+  }
+
+  .tf-admin-shell > .tf-admin-content {
+    padding: 18px;
+  }
+}

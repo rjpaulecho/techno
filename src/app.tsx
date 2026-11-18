@@ -1,46 +1,179 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+
+// src/app.tsx
+// TutoFriends role-based routes.
+// Admin pages share AdminLayout.
+// Tutor Wallet shares TutorDashboard.
+
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+
 import Dashboard from "./pages/dashboard";
 import Login from "./pages/login";
+
 import Services from "./navbar/services";
 import About from "./navbar/about";
 import Contact from "./navbar/contact";
 import Catalog from "./navbar/catalog";
-import Intro from "./components/Intro";
+
 import MyBookings from "./pages/MyBookings";
+
 import Profile from "./components/profile";
+import StudentTransactions from "./pages/StudentTransactions";
+
 import TutorDashboard from "./pages/TutorDashboard";
 
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminPayments from "./pages/AdminPayments";
+import AdminEarnings from "./pages/AdminEarnings";
+import AdminTutors from "./pages/AdminTutors";
+import AdminLayout from "./components/AdminLayout";
+
+import { userService } from "./data/userService";
+
 import "./css/style.css";
-import "./css/intro.css";
 import "./css/tutorDashboard.css";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("loggedIn") === "true"
-  );
+// ==========================================
+// USER TYPES
+// ==========================================
 
-  const [showIntro, setShowIntro] = useState(true);
+type Role =
+  | "student"
+  | "tutor"
+  | "admin"
+  | null;
+
+type SessionResponse = {
+  success?: boolean;
+  role?: string;
+
+  user?: {
+    role?: string;
+  };
+
+  data?: {
+    role?: string;
+
+    user?: {
+      role?: string;
+    };
+  };
+};
+
+// ==========================================
+// ROLE HELPERS
+// ==========================================
+
+function normalizeRole(value: unknown): Role {
+  const role =
+    typeof value === "string"
+      ? value.trim().toLowerCase()
+      : "";
+
+  return (
+    role === "student" ||
+    role === "tutor" ||
+    role === "admin"
+  )
+    ? role
+    : null;
+}
+
+function homeFor(role: Role) {
+  if (role === "admin") {
+    return "/admin/dashboard";
+  }
+
+  if (role === "tutor") {
+    return "/tutor-dashboard";
+  }
+
+  if (role === "student") {
+    return "/dashboard";
+  }
+
+  return "/login";
+}
+
+// ==========================================
+// MAIN APP
+// ==========================================
+
+export default function App() {
+  const [role, setRole] = useState<Role>(null);
+
+  const [checking, setChecking] = useState(true);
 
   const [isDark, setIsDark] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
 
-  const [isTutor, setIsTutor] = useState(() => {
+  // ========================================
+  // VERIFY SERVER SESSION
+  // ========================================
+
+  const refreshSession = useCallback(async () => {
+    setChecking(true);
+
     try {
-      const raw = localStorage.getItem("tutofriends_user");
+      const response = await fetch("/api/auth/me", {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
 
-      if (!raw) return false;
+      if (!response.ok) {
+        setRole(null);
+        return;
+      }
 
-      const user = JSON.parse(raw);
+      const data = (await response.json()) as SessionResponse;
 
-      return user?.role === "tutor";
-    } catch {
-      return false;
+      const nextRole = normalizeRole(
+        data.user?.role ??
+          data.data?.user?.role ??
+          data.data?.role ??
+          data.role
+      );
+
+      setRole(nextRole);
+
+      // Restore display information.
+      // The server remains authoritative.
+
+      if (nextRole && nextRole !== "admin") {
+        try {
+          await userService.restore();
+        } catch {
+          // Display cache only.
+        }
+      }
+    } catch (error) {
+      console.error("Session verification failed:", error);
+      setRole(null);
+    } finally {
+      setChecking(false);
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    void refreshSession();
+  }, [refreshSession]);
+
+  // ========================================
+  // THEME
+  // ========================================
 
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -51,187 +184,264 @@ function App() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
 
-  const toggleDark = () => {
-    setIsDark((value) => !value);
-  };
+  // ========================================
+  // LOGOUT
+  // ========================================
 
-  const handleLogin = () => {
-    localStorage.setItem("loggedIn", "true");
+  function logout() {
+    void (async () => {
+      try {
+        await userService.logout();
 
-    let tutor = false;
+        setRole(null);
 
-    try {
-      const raw = localStorage.getItem("tutofriends_user");
-
-      if (raw) {
-        const user = JSON.parse(raw);
-        tutor = user?.role === "tutor";
+        window.location.replace("/login");
+      } catch (error) {
+        console.error("Logout failed:", error);
       }
-    } catch {
-      tutor = false;
-    }
-
-    setIsTutor(tutor);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("tutofriends_user");
-
-    setIsTutor(false);
-    setIsLoggedIn(false);
-  };
-
-  const handleIntroFinish = () => {
-    setShowIntro(false);
-  };
-
-  if (showIntro) {
-    return <Intro onFinish={handleIntroFinish} />;
+    })();
   }
+
+  // ========================================
+  // LOADING SCREEN
+  // ========================================
+
+  if (checking) {
+    return (
+      <div
+        role="status"
+        style={{
+          minHeight: "100vh",
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        Checking TutoFriends session…
+      </div>
+    );
+  }
+
+  // ========================================
+  // ROLE DESTINATION
+  // ========================================
+
+  const redirect = (
+    <Navigate to={homeFor(role)} replace />
+  );
+
+  // ========================================
+  // ROUTES
+  // ========================================
 
   return (
     <BrowserRouter>
-      {isLoggedIn && !isTutor && (
+      {/* STUDENT NAVBAR */}
+
+      {role === "student" && (
         <Navbar
-          onLogout={handleLogout}
+          onLogout={logout}
           isDark={isDark}
-          onToggleDark={toggleDark}
+          onToggleDark={() =>
+            setIsDark((old) => !old)
+          }
         />
       )}
 
       <Routes>
-        {/* LOGIN */}
+        {/* HOME - DEFAULT STUDENT PAGE */}
+
         <Route
           path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/services"} />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
+          element={redirect}
         />
+
+        {/* LOGIN */}
 
         <Route
           path="/login"
           element={
-            isLoggedIn ? (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/services"} />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
+            role
+              ? redirect
+              : (
+                <Login
+                  onLogin={() => void refreshSession()}
+                />
+              )
           }
         />
 
-        {/* TUTOR DASHBOARD */}
+        {/* ==================================
+            ADMINISTRATOR
+            SHARED SIDEBAR
+        ================================== */}
+
+        <Route
+          path="/admin"
+          element={
+            role === "admin"
+              ? <AdminLayout />
+              : redirect
+          }
+        >
+          <Route
+            index
+            element={
+              <Navigate to="dashboard" replace />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<AdminDashboard />}
+          />
+
+          <Route
+            path="payments"
+            element={<AdminPayments />}
+          />
+
+          <Route
+            path="earnings"
+            element={<AdminEarnings />}
+          />
+
+          <Route
+            path="tutors"
+            element={<AdminTutors />}
+          />
+        </Route>
+
+        {/* ==================================
+            TUTOR
+            PERMANENT SIDEBAR
+        ================================== */}
+
         <Route
           path="/tutor-dashboard"
           element={
-            isLoggedIn && isTutor ? (
-              <TutorDashboard />
-            ) : (
-              <Navigate to={isLoggedIn ? "/services" : "/"} />
-            )
+            role === "tutor"
+              ? <TutorDashboard />
+              : redirect
           }
         />
 
-        {/* STUDENT PAGES */}
         <Route
-          path="/services"
+          path="/tutor/wallet"
           element={
-            isLoggedIn && !isTutor ? (
-              <Services />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "tutor"
+              ? <TutorDashboard />
+              : redirect
           }
         />
+
+        <Route
+          path="/tutor/transactions"
+          element={
+            role === "tutor"
+              ? <TutorDashboard />
+              : redirect
+          }
+        />
+
+        {/* ==================================
+            STUDENT
+        ================================== */}
+
+        {/* HOME */}
 
         <Route
           path="/dashboard"
           element={
-            isLoggedIn && !isTutor ? (
-              <Dashboard />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <Dashboard />
+              : redirect
           }
         />
+
+        {/* SERVICES */}
+
+        <Route
+          path="/services"
+          element={
+            role === "student"
+              ? <Services />
+              : redirect
+          }
+        />
+
+        {/* ABOUT */}
 
         <Route
           path="/about"
           element={
-            isLoggedIn && !isTutor ? (
-              <About />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <About />
+              : redirect
           }
         />
+
+        {/* CONTACT */}
 
         <Route
           path="/contact"
           element={
-            isLoggedIn && !isTutor ? (
-              <Contact />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <Contact />
+              : redirect
           }
         />
+
+        {/* CATALOG */}
 
         <Route
           path="/catalog"
           element={
-            isLoggedIn && !isTutor ? (
-              <Catalog />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <Catalog />
+              : redirect
           }
         />
+
+        {/* BOOKINGS */}
 
         <Route
           path="/bookings"
           element={
-            isLoggedIn && !isTutor ? (
-              <MyBookings />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <MyBookings />
+              : redirect
           }
         />
+
+        {/* TRANSACTIONS */}
+
+        <Route
+          path="/transactions"
+          element={
+            role === "student"
+              ? <StudentTransactions />
+              : redirect
+          }
+        />
+
+        {/* PROFILE */}
 
         <Route
           path="/profile"
           element={
-            isLoggedIn && !isTutor ? (
-              <Profile />
-            ) : (
-              <Navigate to={isTutor ? "/tutor-dashboard" : "/"} />
-            )
+            role === "student"
+              ? <Profile />
+              : redirect
           }
         />
 
+        {/* UNKNOWN ROUTE */}
+
         <Route
           path="*"
-          element={
-            <Navigate
-              to={
-                isLoggedIn
-                  ? isTutor
-                    ? "/tutor-dashboard"
-                    : "/services"
-                  : "/"
-              }
-            />
-          }
+          element={redirect}
         />
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

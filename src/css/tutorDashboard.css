@@ -1529,3 +1529,672 @@
     align-items: flex-start;
   }
 }
+
+/* Step 25 - Tutor Wallet sidebar link */
+
+.tutor-sidebar-nav .tutor-wallet-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tutor-sidebar-nav .tutor-wallet-link span {
+  width: 18px;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.tutor-sidebar-nav .tutor-wallet-link:hover {
+  background: rgba(0, 116, 228, 0.07);
+  color: var(--accent);
+}
+
+
+
+
+/* VIEW DETAILS BUTTON */
+.tutor-details-button {
+  padding: 7px 10px;
+  border: 1px solid rgba(0,116,228,.28);
+  border-radius: 8px;
+  background: rgba(0,116,228,.08);
+  color: var(--accent);
+  font: 600 11px 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.tutor-details-button:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* BOOKING MODAL */
+.tutor-booking-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,.62);
+}
+
+.tutor-booking-modal {
+  width: min(100%, 620px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: 0 24px 80px rgba(0,0,0,.28);
+}
+
+.tutor-booking-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.tutor-booking-modal-header span,
+.tutor-booking-detail-grid small,
+.tutor-booking-message small {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.tutor-booking-modal-header h2 {
+  margin: 5px 0 0;
+  color: var(--text-primary);
+  font-size: 22px;
+}
+
+.tutor-booking-modal-close {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.tutor-booking-client {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.tutor-booking-client .tutor-request-avatar {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  background: var(--accent);
+}
+
+.tutor-booking-client > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tutor-booking-client strong {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.tutor-booking-client span,
+.tutor-booking-client a {
+  color: var(--text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.tutor-booking-client a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.tutor-booking-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tutor-booking-detail-grid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.tutor-booking-detail-grid strong {
+  color: var(--text-primary);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.tutor-booking-message {
+  margin-top: 17px;
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.tutor-booking-message p {
+  margin: 8px 0 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tutor-booking-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.tutor-booking-modal-footer button {
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font: 600 13px 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+/* Keep tutor accents blue instead of purple or green */
+.tutor-sidebar-nav button.active {
+  background: rgba(0,116,228,.12);
+}
+
+.tutor-request-avatar {
+  background: var(--accent);
+}
+
+.tutor-request-status.accepted {
+  background: rgba(0,116,228,.13);
+  color: var(--accent);
+}
+
+.tutor-accept-button {
+  background: rgba(0,116,228,.08);
+  border-color: rgba(0,116,228,.2);
+  color: var(--accent);
+}
+
+.tutor-accept-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .tutor-booking-modal {
+    padding: 18px;
+  }
+
+  .tutor-booking-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tutor-theme-toggle {
+    margin-top: 14px;
+  }
+}
+
+
+/* =========================================================
+   TUTOFRIENDS - FINAL BLUE / BLACK / WHITE OVERRIDES
+   ========================================================= */
+
+/* Remove purple gradients */
+.tutor-sidebar-nav button.active {
+  background: rgba(0, 116, 228, 0.12);
+}
+
+.tutor-stat-icon,
+.tutor-schedule-day {
+  background: rgba(0, 116, 228, 0.10);
+  color: var(--accent);
+}
+
+.tutor-request-avatar {
+  background: var(--accent);
+}
+
+/* Replace green availability indicators with blue */
+.status-dot.available {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 116, 228, 0.12);
+}
+
+.tutor-availability-indicator.available {
+  background: rgba(0, 116, 228, 0.10);
+}
+
+.tutor-availability-indicator.available span {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(0, 116, 228, 0.12);
+}
+
+.tutor-large-status.available .tutor-large-status-icon {
+  background: rgba(0, 116, 228, 0.10);
+}
+
+.tutor-large-status.available .tutor-large-status-icon span {
+  background: var(--accent);
+  box-shadow: 0 0 0 7px rgba(0, 116, 228, 0.12);
+}
+
+/* Booking status colors */
+.tutor-request-status.pending,
+.tutor-request-status.accepted,
+.tutor-request-status.declined {
+  background: rgba(0, 116, 228, 0.10);
+  color: var(--accent);
+}
+
+/* Accepted and enabled states */
+.tutor-accept-button {
+  background: rgba(0, 116, 228, 0.08);
+  border-color: rgba(0, 116, 228, 0.20);
+  color: var(--accent);
+}
+
+.tutor-accept-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.tutor-week-list button.enabled {
+  background: rgba(0, 116, 228, 0.10);
+  border-color: rgba(0, 116, 228, 0.18);
+  color: var(--accent);
+}
+
+/* =========================================================
+   BOOKING DETAILS MODAL - ACTIONS AND STATUS
+   ========================================================= */
+
+.tutor-booking-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(0, 116, 228, 0.10);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.tutor-booking-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.tutor-booking-modal-footer button {
+  min-height: 40px;
+  padding: 10px 17px;
+  border-radius: 10px;
+  font: 600 12px 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tutor-modal-accept {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.tutor-modal-accept:hover {
+  background: #005bb5;
+  border-color: #005bb5;
+}
+
+.tutor-modal-decline {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.tutor-modal-decline:hover {
+  background: var(--bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tutor-modal-close-button {
+  border: 1px solid var(--border) !important;
+  background: var(--bg) !important;
+  color: var(--text-primary) !important;
+}
+
+.tutor-modal-close-button:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Modal close button */
+.tutor-booking-modal-close {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.tutor-booking-modal-close:hover {
+  background: var(--bg);
+  color: var(--accent);
+}
+
+/* Dark mode modal improvements */
+[data-theme="dark"] .tutor-booking-modal {
+  background: var(--panel-bg);
+  border-color: var(--border);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .tutor-booking-client,
+[data-theme="dark"] .tutor-booking-message {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+[data-theme="dark"] .tutor-booking-detail-grid > div {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+
+
+/* Responsive modal */
+@media (max-width: 600px) {
+  .tutor-booking-modal-backdrop {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 12px;
+  }
+
+  .tutor-booking-modal {
+    width: 100%;
+    max-height: none;
+    margin: auto 0;
+    padding: 18px;
+  }
+
+  .tutor-booking-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tutor-booking-modal-footer button {
+    width: 100%;
+  }
+}
+
+/* Header actions */
+.tutor-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Circular dark mode button — matches client side */
+.tutor-dashboard .dark-toggle {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  font-size: 19px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.tutor-dashboard .dark-toggle:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+.tutor-dashboard .dark-toggle:focus-visible {
+  outline: 3px solid rgba(0, 116, 228, 0.35);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .tutor-header-actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+/* ==========================================
+   TUTOR BOOKING PAYMENT STATUS
+========================================== */
+
+.tutor-payment-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--panel-bg);
+  color: var(--text-primary);
+}
+
+.tutor-payment-status.paid {
+  color: #ffffff;
+  background: #0074e4;
+  border-color: #0074e4;
+}
+
+.tutor-payment-status.unpaid {
+  color: var(--text-primary);
+  background: var(--bg);
+}
+
+.tutor-payment-status.pending_verification {
+  color: #0074e4;
+  background: rgba(0, 116, 228, 0.10);
+  border-color: rgba(0, 116, 228, 0.35);
+}
+
+.tutor-payment-status.refund_pending {
+  color: #0074e4;
+  background: rgba(0, 116, 228, 0.10);
+  border-color: rgba(0, 116, 228, 0.35);
+}
+
+.tutor-payment-status.refunded {
+  color: var(--text-muted);
+  background: var(--bg);
+}
+
+
+/* ==========================================
+   TUTOR BOOKING PAYMENT INFORMATION
+========================================== */
+
+.tutor-payment-card {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.tutor-payment-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tutor-payment-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.tutor-payment-card-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 19px;
+  font-weight: 750;
+}
+
+/* Payment status badge */
+
+.tutor-payment-card .tutor-payment-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 13px;
+  border: 1px solid rgba(0, 116, 228, 0.25);
+  border-radius: 30px;
+  background: rgba(0, 116, 228, 0.10);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* Payment information grid */
+
+.tutor-payment-card-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px 0;
+}
+
+.tutor-payment-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.tutor-payment-item span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tutor-payment-item strong {
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.tutor-payment-item .tutor-payment-amount-paid {
+  color: var(--accent);
+  font-size: 19px;
+}
+
+/* Footer */
+
+.tutor-payment-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Responsive */
+
+@media (max-width: 520px) {
+  .tutor-payment-card {
+    padding: 16px;
+  }
+
+  .tutor-payment-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tutor-payment-card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .tutor-payment-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
