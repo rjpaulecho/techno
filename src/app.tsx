@@ -310,14 +310,13 @@ export default function App() {
             path="tutors"
             element={<AdminTutors />}
           />
-        </Route>
 
-
-        <Route
+                  <Route
           path="messages"
           element={<AdminMessages />}
         />
 
+        </Route>
         {/* ==================================
             TUTOR
             PERMANENT SIDEBAR

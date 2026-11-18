@@ -463,7 +463,9 @@ export default function AdminMessages() {
               <div className="am-detail-actions">
                 <button
                   type="button"
-                  className="am-read-button"
+                  className={`am-read-button ${
+                isRead(selectedMessage) ? "am-mark-unread" : "am-mark-read"
+                }`}
                   disabled={updating}
                   onClick={() =>
                     void toggleReadStatus(selectedMessage)

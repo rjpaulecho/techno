@@ -597,8 +597,20 @@
   border: 1px solid #d6eaff;
 }
 
-.am-read-button:hover:not(:disabled) {
+/* Mark as Unread — subtle hover */
+.am-read-button.am-mark-unread:hover:not(:disabled) {
+  color: #40566e !important;
+  background: #f1f5fa !important;
+  border-color: #cbd8e6 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Mark as Read — soft blue hover */
+.am-read-button.am-mark-read:hover:not(:disabled) {
+  color: #0756a5;
   background: #dceeff;
+  border-color: #c5def5;
 }
 
 .am-reply-button {

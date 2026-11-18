@@ -201,8 +201,18 @@ router.patch("/:id/read", requireAdmin, async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return fail(res, 404, "Message not found.");
-    }
+  const [existing] = await db.execute(
+    `SELECT message_id
+     FROM contact_messages
+     WHERE message_id = ?
+     LIMIT 1`,
+    [messageId]
+  );
+
+  if (existing.length === 0) {
+    return fail(res, 404, "Message not found.");
+  }
+}
 
     return res.json({
       success: true,
