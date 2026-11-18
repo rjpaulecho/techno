@@ -39,6 +39,7 @@ import AdminPayments from "./pages/AdminPayments";
 import AdminEarnings from "./pages/AdminEarnings";
 import AdminTutors from "./pages/AdminTutors";
 import AdminLayout from "./components/AdminLayout";
+import AdminMessages from "./pages/AdminMessages";
 
 import { userService } from "./data/userService";
 
@@ -310,6 +311,12 @@ export default function App() {
             element={<AdminTutors />}
           />
         </Route>
+
+
+        <Route
+          path="messages"
+          element={<AdminMessages />}
+        />
 
         {/* ==================================
             TUTOR

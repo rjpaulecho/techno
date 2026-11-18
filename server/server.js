@@ -15,6 +15,7 @@ import paymentRoutes from "./routes/payments.js";
 import demoPaymentRoutes from "./routes/demoPayments.js";
 import transactionTicketRoutes from "./routes/transactionTickets.js";
 import adminDemoReviews from "./routes/adminDemoReviews.js";
+import contactMessageRoutes from "./routes/contactMessages.js";
 
 // Development login
 import devLoginRoutes from "./routes/devLogin.js";
@@ -158,6 +159,12 @@ app.get("/api", (_req, res) => {
     message: "TutoFriends API running",
   });
 });
+
+// ==========================================
+// CONTACT MESSAGES
+// ==========================================
+
+app.use("/api/contact-messages", contactMessageRoutes);
 
 // ==========================================
 // INVALID JSON

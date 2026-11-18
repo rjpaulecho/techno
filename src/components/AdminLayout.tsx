@@ -104,6 +104,16 @@ export default function AdminLayout() {
             Dashboard
           </NavLink>
 
+
+          <NavLink
+            to="/admin/messages"
+            end
+            className={navClass}
+          >
+            <span aria-hidden="true">✉</span>
+            Messages
+          </NavLink>
+
           {/* TUTOR MANAGEMENT */}
 
           <NavLink
