@@ -1,22 +1,14 @@
-
-import { useState, type FormEvent, type MouseEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useLocation } from "react-router-dom";
-
 import AdvancedCarousel from "../components/AdvancedCarousel";
 
 import "../css/style.css";
 import "../css/carousel.css";
 import "../css/contact.css";
 
-/* ==========================================
-   TUTOfRIENDS CONTACT CONFIGURATION
-
-   EDIT THESE VALUES WHENEVER NEEDED.
-========================================== */
-
+// EDIT THESE DETAILS WHENEVER NEEDED.
 const TF_CONTACT = {
-  email: "tutofriends@example.com",
-
+  email: "tutofriends@school.edu.ph",
   // SAMPLE ADDRESS ONLY — replace with your actual address.
   address:
     "TutoFriends Learning Hub, 123 Learning Avenue, Pateros, Metro Manila, Philippines",
@@ -24,61 +16,48 @@ const TF_CONTACT = {
 
 type ModalType = "message" | "location" | null;
 
-type MessageCategory = "feedback" | "general" | "technical" | "other";
-
-type SubmitResponse = {
+type ApiResponse = {
   success?: boolean;
   message?: string;
 };
 
-function Contact() {
+export default function Contact() {
   const { state } = useLocation();
   const initialIndex: number = state?.tutorIndex ?? 0;
 
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-
-  const [category, setCategory] = useState<MessageCategory>("general");
+  const [category, setCategory] = useState("general");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [feedbackType, setFeedbackType] = useState<"success" | "error">(
+    "success"
+  );
 
   function closeModal() {
-    if (isSubmitting) return;
-
+    if (sending) return;
     setActiveModal(null);
-    setSuccessMessage("");
-    setErrorMessage("");
+    setFeedback("");
   }
 
-  function handleOverlayClick(event: MouseEvent<HTMLDivElement>) {
-    if (event.target === event.currentTarget) {
-      closeModal();
-    }
-  }
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function submitMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setFeedback("");
 
-    setSuccessMessage("");
-    setErrorMessage("");
-
-    const cleanSubject = subject.trim();
-    const cleanMessage = message.trim();
-
-    if (cleanSubject.length < 3 || cleanSubject.length > 160) {
-      setErrorMessage("Subject must contain 3 to 160 characters.");
+    if (subject.trim().length < 3) {
+      setFeedbackType("error");
+      setFeedback("Subject must contain at least 3 characters.");
       return;
     }
 
-    if (cleanMessage.length < 10 || cleanMessage.length > 5000) {
-      setErrorMessage("Message must contain 10 to 5,000 characters.");
+    if (message.trim().length < 10) {
+      setFeedbackType("error");
+      setFeedback("Message must contain at least 10 characters.");
       return;
     }
 
-    setIsSubmitting(true);
+    setSending(true);
 
     try {
       const response = await fetch("/api/contact-messages", {
@@ -89,34 +68,33 @@ function Contact() {
         },
         body: JSON.stringify({
           category,
-          subject: cleanSubject,
-          message: cleanMessage,
+          subject: subject.trim(),
+          message: message.trim(),
         }),
       });
 
-      const data = (await response.json()) as SubmitResponse;
+      const data = (await response.json()) as ApiResponse;
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message || "Unable to send your message. Please try again."
+          data.message || `Unable to send message (HTTP ${response.status}).`
         );
       }
 
-      setSuccessMessage(
-        data.message || "Your message has been sent successfully!"
-      );
-
-      setCategory("general");
+      setFeedbackType("success");
+      setFeedback(data.message || "Your message has been sent successfully.");
       setSubject("");
       setMessage("");
+      setCategory("general");
     } catch (error) {
-      setErrorMessage(
+      setFeedbackType("error");
+      setFeedback(
         error instanceof Error
           ? error.message
           : "Something went wrong. Please try again."
       );
     } finally {
-      setIsSubmitting(false);
+      setSending(false);
     }
   }
 
@@ -124,16 +102,17 @@ function Contact() {
     TF_CONTACT.address
   )}&output=embed`;
 
+  const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    TF_CONTACT.address
+  )}`;
+
   return (
     <div className="contact-page">
-      {/* HERO */}
       <section className="contact-hero">
         <p className="contact-eyebrow">Get to Know Us</p>
-
         <h1 className="contact-hero-title">
           Meet the <span className="contact-gradient">Team</span>
         </h1>
-
         <p className="contact-hero-sub">
           We're a group of students who built TutoFriends to make learning
           more accessible, friendly, and fun. Drag or click any card to learn
@@ -141,29 +120,24 @@ function Contact() {
         </p>
       </section>
 
-      {/* TEAM CAROUSEL */}
       <div className="contact-carousel-wrap" id="team-carousel">
         <AdvancedCarousel initialIndex={initialIndex} />
       </div>
 
-      {/* REACH OUT */}
       <section className="contact-reach">
         <div className="contact-reach-inner">
-          <p className="contact-eyebrow contact-center">
-            Reach Out
-          </p>
+          <p className="contact-eyebrow contact-centered">Reach Out</p>
 
           <h2 className="contact-reach-title">
-            We'd Love to Hear From You
+            Have a question or suggestion?
           </h2>
 
           <p className="contact-reach-sub">
-            Have a question, suggestion, or concern? Choose how you'd
-            like to get in touch with us.
+            We'd love to hear from you. Drop us a message and we'll get back
+            to you as soon as we can.
           </p>
 
           <div className="contact-cards">
-            {/* EMAIL CARD */}
             <a
               className="contact-card contact-action-card"
               href={`mailto:${TF_CONTACT.email}`}
@@ -171,236 +145,164 @@ function Contact() {
               <span className="contact-card-icon">📧</span>
               <h3>Email Us</h3>
               <p>{TF_CONTACT.email}</p>
-              <span className="contact-card-action">
-                Open email <span aria-hidden="true">↗</span>
-              </span>
+              <span className="contact-card-action">Open email →</span>
             </a>
 
-            {/* MESSAGE CARD */}
             <button
               type="button"
               className="contact-card contact-action-card"
-              onClick={() => setActiveModal("message")}
+              onClick={() => {
+                setFeedback("");
+                setActiveModal("message");
+              }}
             >
               <span className="contact-card-icon">💬</span>
-              <h3>Message Us</h3>
-              <p>Send feedback, questions, or report an issue.</p>
-              <span className="contact-card-action">
-                Send a message <span aria-hidden="true">→</span>
-              </span>
+              <h3>Message</h3>
+              <p>Send us a message through the app</p>
+              <span className="contact-card-action">Send a message →</span>
             </button>
 
-            {/* LOCATION CARD */}
             <button
               type="button"
               className="contact-card contact-action-card"
               onClick={() => setActiveModal("location")}
             >
               <span className="contact-card-icon">📍</span>
-              <h3>Our Location</h3>
-              <p>Find us and view our location on the map.</p>
-              <span className="contact-card-action">
-                View location <span aria-hidden="true">→</span>
-              </span>
+              <h3>Location</h3>
+              <p>View our location on the map</p>
+              <span className="contact-card-action">View location →</span>
             </button>
           </div>
         </div>
       </section>
 
-      {/* MESSAGE MODAL */}
-      {activeModal === "message" && (
+      {activeModal && (
         <div
           className="contact-modal-overlay"
-          onClick={handleOverlayClick}
+          onClick={closeModal}
+          role="presentation"
         >
           <section
             className="contact-modal"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="contact-message-title"
+            aria-labelledby="contact-modal-title"
+            onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               className="contact-modal-close"
               onClick={closeModal}
-              aria-label="Close message form"
-              disabled={isSubmitting}
+              aria-label="Close modal"
+              disabled={sending}
             >
               ×
             </button>
 
-            <div className="contact-modal-heading">
-              <span className="contact-modal-icon">✉</span>
-
-              <div>
-                <p className="contact-eyebrow">GET IN TOUCH</p>
-                <h2 id="contact-message-title">Send us a message</h2>
-                <p>
-                  Your message will be sent directly to the
-                  TutoFriends administration team.
+            {activeModal === "message" ? (
+              <>
+                <p className="contact-eyebrow">CONTACT SUPPORT</p>
+                <h2 id="contact-modal-title">Send us a message</h2>
+                <p className="contact-modal-description">
+                  Tell us what's on your mind. Your message will be sent to
+                  the TutoFriends admin inbox.
                 </p>
-              </div>
-            </div>
 
-            <form
-              className="contact-message-form"
-              onSubmit={handleSubmit}
-            >
-              <div className="contact-form-field">
-                <label htmlFor="contact-category">
-                  Message type
-                </label>
-
-                <select
-                  id="contact-category"
-                  value={category}
-                  onChange={(event) =>
-                    setCategory(event.target.value as MessageCategory)
-                  }
-                  disabled={isSubmitting}
+                <form
+                  className="contact-message-form"
+                  onSubmit={submitMessage}
                 >
-                  <option value="general">General inquiry</option>
-                  <option value="feedback">Feedback or suggestion</option>
-                  <option value="technical">Technical issue</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+                  <label htmlFor="contact-category">Message category</label>
+                  <select
+                    id="contact-category"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                    disabled={sending}
+                  >
+                    <option value="general">General Inquiry</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="technical">Technical Issue</option>
+                    <option value="other">Other</option>
+                  </select>
 
-              <div className="contact-form-field">
-                <label htmlFor="contact-subject">Subject</label>
+                  <label htmlFor="contact-subject">Subject</label>
+                  <input
+                    id="contact-subject"
+                    type="text"
+                    value={subject}
+                    onChange={(event) => setSubject(event.target.value)}
+                    placeholder="What is this about?"
+                    minLength={3}
+                    maxLength={160}
+                    required
+                    disabled={sending}
+                  />
 
-                <input
-                  id="contact-subject"
-                  type="text"
-                  value={subject}
-                  onChange={(event) => setSubject(event.target.value)}
-                  placeholder="What is your message about?"
-                  minLength={3}
-                  maxLength={160}
-                  required
-                  disabled={isSubmitting}
-                />
+                  <label htmlFor="contact-message">Your message</label>
+                  <textarea
+                    id="contact-message"
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                    placeholder="Write your message here..."
+                    minLength={10}
+                    maxLength={5000}
+                    rows={6}
+                    required
+                    disabled={sending}
+                  />
 
-                <span className="contact-field-hint">
-                  {subject.length}/160 characters
-                </span>
-              </div>
+                  {feedback && (
+                    <p
+                      className={`contact-form-feedback ${
+                        feedbackType === "success"
+                          ? "is-success"
+                          : "is-error"
+                      }`}
+                      role="status"
+                    >
+                      {feedback}
+                    </p>
+                  )}
 
-              <div className="contact-form-field">
-                <label htmlFor="contact-message">Your message</label>
-
-                <textarea
-                  id="contact-message"
-                  value={message}
-                  onChange={(event) => setMessage(event.target.value)}
-                  placeholder="Write your message here..."
-                  minLength={10}
-                  maxLength={5000}
-                  rows={6}
-                  required
-                  disabled={isSubmitting}
-                />
-
-                <span className="contact-field-hint">
-                  {message.length}/5000 characters
-                </span>
-              </div>
-
-              {errorMessage && (
-                <div className="contact-form-alert contact-form-error" role="alert">
-                  {errorMessage}
-                </div>
-              )}
-
-              {successMessage && (
-                <div className="contact-form-alert contact-form-success" role="status">
-                  {successMessage}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="contact-submit-button"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Sending..." : "Send Message"}
-                {!isSubmitting && <span aria-hidden="true">→</span>}
-              </button>
-
-              <p className="contact-form-note">
-                🔒 Your message is visible to authorized TutoFriends
-                administrators.
-              </p>
-            </form>
-          </section>
-        </div>
-      )}
-
-      {/* LOCATION MODAL */}
-      {activeModal === "location" && (
-        <div
-          className="contact-modal-overlay"
-          onClick={handleOverlayClick}
-        >
-          <section
-            className="contact-modal contact-location-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="contact-location-title"
-          >
-            <button
-              type="button"
-              className="contact-modal-close"
-              onClick={closeModal}
-              aria-label="Close location"
-            >
-              ×
-            </button>
-
-            <div className="contact-modal-heading">
-              <span className="contact-modal-icon">📍</span>
-
-              <div>
+                  <button
+                    type="submit"
+                    className="contact-submit-button"
+                    disabled={sending}
+                  >
+                    {sending ? "Sending..." : "Send Message"}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
                 <p className="contact-eyebrow">FIND US</p>
-                <h2 id="contact-location-title">Our Location</h2>
-                <p>Here's where you can find TutoFriends.</p>
-              </div>
-            </div>
+                <h2 id="contact-modal-title">Our Location</h2>
+                <p className="contact-modal-description">
+                  {TF_CONTACT.address}
+                </p>
 
-            <div className="contact-location-address">
-              <strong>Address</strong>
-              <p>{TF_CONTACT.address}</p>
-              <span className="contact-location-placeholder">
-                Sample address — edit TF_CONTACT.address in contact.tsx
-                when your official location is available.
-              </span>
-            </div>
+                <iframe
+                  className="contact-map"
+                  title="TutoFriends location map"
+                  src={mapUrl}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
 
-            <div className="contact-map-container">
-              <iframe
-                title="TutoFriends sample location map"
-                src={mapUrl}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
-            </div>
-
-            <a
-              className="contact-submit-button contact-map-link"
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                TF_CONTACT.address
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open in Google Maps <span aria-hidden="true">↗</span>
-            </a>
+                <a
+                  className="contact-submit-button contact-map-link"
+                  href={mapLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open in Google Maps ↗
+                </a>
+              </>
+            )}
           </section>
         </div>
       )}
     </div>
   );
 }
-
-export default Contact;
