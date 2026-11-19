@@ -40,6 +40,7 @@ import AdminEarnings from "./pages/AdminEarnings";
 import AdminTutors from "./pages/AdminTutors";
 import AdminLayout from "./components/AdminLayout";
 import AdminMessages from "./pages/AdminMessages";
+import AdminFeaturedTutors from "./pages/AdminFeaturedTutors";
 
 import { userService } from "./data/userService";
 
@@ -309,6 +310,11 @@ export default function App() {
           <Route
             path="tutors"
             element={<AdminTutors />}
+          />
+
+          <Route
+            path="featured-tutors"
+            element={<AdminFeaturedTutors />}
           />
 
                   <Route

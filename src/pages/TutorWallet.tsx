@@ -346,11 +346,7 @@ export default function TutorWallet() {
         </button>
       </div>
 
-      <div className="tutor-wallet-notice" role="note">
-        <strong>Simulation only — no real money.</strong>{" "}
-        All earnings and withdrawals are fictional database
-        records. No bank, GCash, or Maya transfer is made.
-      </div>
+
 
       {error && (
         <div className="tutor-wallet-error" role="alert">
@@ -427,11 +423,7 @@ export default function TutorWallet() {
               </div>
             </div>
 
-            <p>
-              Choose a simulated payout method and enter
-              four fictional destination digits. The amount
-              will be deducted from your available demo balance.
-            </p>
+
 
             <form
               className="tutor-wallet-form"
@@ -512,10 +504,11 @@ export default function TutorWallet() {
               </button>
             </form>
 
-            <small className="tutor-wallet-disclaimer">
-              Do not enter a real account number or sensitive
-              banking information. Only fictional digits are needed.
-            </small>
+            {submitting && (
+              <div className="tutor-wallet-submitting" role="status">
+                Recording withdrawal…
+              </div>
+            )}
           </div>
 
           {/* LATEST WITHDRAWAL SLIP */}
@@ -536,11 +529,7 @@ export default function TutorWallet() {
                 </span>
               </div>
 
-              <p>
-                This slip confirms that a test withdrawal
-                was recorded in the TutoFriends database.
-                It is not proof of a real money transfer.
-              </p>
+
 
               <dl className="tutor-wallet-slip-details">
                 <div>

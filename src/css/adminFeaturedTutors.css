@@ -1,0 +1,597 @@
+
+/* ==========================================
+   TUTOFRIENDS — FEATURED TUTORS ADMIN
+   Palette: Black / White / Blue
+========================================== */
+
+.af-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 32px;
+  color: #172033;
+  background: #f5f7fb;
+}
+
+.af-page *,
+.af-page *::before,
+.af-page *::after {
+  box-sizing: border-box;
+}
+
+.af-page .ad-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.af-page .ad-eyebrow {
+  margin-bottom: 8px;
+  color: #2878ce;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.af-page h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+}
+
+.af-page .ad-header p {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: #68758a;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.af-refresh,
+.af-save,
+.af-select-button,
+.af-selected-button,
+.af-remove,
+.af-order-actions button {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.af-refresh {
+  padding: 11px 17px;
+  border: 1px solid #cbd8e8;
+  border-radius: 9px;
+  background: #fff;
+  color: #245d9c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.af-refresh:hover:not(:disabled) {
+  background: #eaf3ff;
+  border-color: #83b5e9;
+}
+
+.af-refresh:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.af-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.af-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 21px;
+  border: 1px solid #e0e7f0;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(20, 40, 70, 0.035);
+}
+
+.af-summary span {
+  color: #718096;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.af-summary strong {
+  color: #172033;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.af-selected,
+.af-directory {
+  margin-bottom: 25px;
+  padding: 24px;
+  border: 1px solid #e0e7f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(20, 40, 70, 0.035);
+}
+
+.af-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.af-section-heading h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.af-section-heading p {
+  margin: 7px 0 0;
+  color: #718096;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.af-section-heading > span {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #eaf3ff;
+  color: #1765b2;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.af-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+
+.af-order-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 58px;
+  padding: 10px 13px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #f9fbfe;
+}
+
+.af-order-number {
+  display: grid;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 8px;
+  background: #1769b5;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.af-order-item > strong {
+  flex: 1;
+  min-width: 0;
+  color: #253247;
+  font-size: 14px;
+}
+
+.af-order-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.af-order-actions button {
+  min-width: 31px;
+  height: 31px;
+  border: 1px solid #dce4ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #315778;
+  font-weight: 700;
+}
+
+.af-order-actions button:hover:not(:disabled) {
+  border-color: #7eb5e8;
+  background: #eaf3ff;
+}
+
+.af-order-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.af-order-actions .af-remove {
+  padding: 0 10px;
+  color: #536176;
+  font-size: 11px;
+}
+
+.af-order-actions .af-remove:hover {
+  border-color: #a7c7e8;
+  background: #edf5fd;
+  color: #1b5d9c;
+}
+
+.af-empty {
+  padding: 24px;
+  color: #8190a5;
+  font-size: 13px;
+  text-align: center;
+}
+
+.af-save {
+  width: 100%;
+  min-height: 45px;
+  border-radius: 9px;
+  background: #1769b5;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.af-save:hover:not(:disabled) {
+  background: #0d5598;
+  box-shadow: 0 5px 14px rgba(23, 105, 181, 0.18);
+}
+
+.af-save:disabled {
+  background: #a8b9cc;
+  cursor: not-allowed;
+}
+
+.af-search {
+  width: 100%;
+  min-height: 43px;
+  margin-bottom: 20px;
+  padding: 0 14px;
+  border: 1px solid #dce4ef;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  font-size: 13px;
+}
+
+.af-search:focus {
+  border-color: #4a91d4;
+  box-shadow: 0 0 0 3px rgba(54, 133, 208, 0.12);
+}
+
+.af-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.af-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #e1e8f1;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.af-card:hover {
+  border-color: #b7d2ed;
+  box-shadow: 0 7px 20px rgba(25, 65, 110, 0.06);
+}
+
+.af-card.is-selected {
+  border-color: #3988ce;
+  box-shadow: 0 0 0 2px rgba(57, 136, 206, 0.1);
+}
+
+.af-card-top {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+}
+
+.af-avatar {
+  display: grid;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid #d7e5f3;
+  border-radius: 50%;
+  background: #eaf3ff;
+  color: #1769b5;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.af-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.af-tutor-identity {
+  min-width: 0;
+}
+
+.af-tutor-identity h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #172033;
+  font-size: 15px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.af-tutor-identity p {
+  margin: 5px 0;
+  overflow: hidden;
+  color: #77859a;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.af-status {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.af-status.active {
+  color: #1769b5;
+}
+
+.af-status.inactive {
+  color: #8792a3;
+}
+
+.af-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 13px;
+}
+
+.af-metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #e7edf5;
+  border-radius: 8px;
+  background: #f8fafd;
+}
+
+.af-metrics span {
+  color: #77859a;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.af-metrics strong {
+  overflow-wrap: anywhere;
+  color: #24364e;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.af-subjects {
+  min-height: 18px;
+  margin: 0 0 13px;
+  color: #718096;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.af-select-button,
+.af-selected-button {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid #b7d2ed;
+  border-radius: 8px;
+  background: #f1f7fd;
+  color: #1769b5;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.af-select-button:hover:not(:disabled) {
+  border-color: #438fce;
+  background: #e1effd;
+}
+
+.af-selected-button {
+  border-color: #1769b5;
+  background: #1769b5;
+  color: #fff;
+}
+
+.af-select-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.af-message {
+  margin-bottom: 18px;
+  padding: 13px 15px;
+  border: 1px solid;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.af-error {
+  border-color: #c7d8eb;
+  background: #eff5fc;
+  color: #245d91;
+}
+
+.af-success {
+  border-color: #a9c9e8;
+  background: #edf5fd;
+  color: #174f83;
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+[data-theme="dark"] .af-page {
+  background: #111722;
+  color: #e8eef7;
+}
+
+[data-theme="dark"] .af-page h1,
+[data-theme="dark"] .af-section-heading h2,
+[data-theme="dark"] .af-tutor-identity h3 {
+  color: #f1f5fb;
+}
+
+[data-theme="dark"] .af-page .ad-header p,
+[data-theme="dark"] .af-section-heading p,
+[data-theme="dark"] .af-tutor-identity p,
+[data-theme="dark"] .af-subjects {
+  color: #9eacc0;
+}
+
+[data-theme="dark"] .af-summary > div,
+[data-theme="dark"] .af-selected,
+[data-theme="dark"] .af-directory,
+[data-theme="dark"] .af-card {
+  border-color: #303c4e;
+  background: #1b2533;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .af-summary span,
+[data-theme="dark"] .af-metrics span {
+  color: #a5b2c4;
+}
+
+[data-theme="dark"] .af-summary strong,
+[data-theme="dark"] .af-metrics strong {
+  color: #f0f5fc;
+}
+
+[data-theme="dark"] .af-order-item,
+[data-theme="dark"] .af-metrics > div {
+  border-color: #354257;
+  background: #202c3c;
+}
+
+[data-theme="dark"] .af-order-item > strong {
+  color: #e8eef7;
+}
+
+[data-theme="dark"] .af-search {
+  border-color: #3a485c;
+  background: #151e2b;
+  color: #f0f5fc;
+}
+
+[data-theme="dark"] .af-refresh,
+[data-theme="dark"] .af-order-actions button {
+  border-color: #3b4b62;
+  background: #202c3c;
+  color: #c5dcf6;
+}
+
+[data-theme="dark"] .af-refresh:hover:not(:disabled),
+[data-theme="dark"] .af-order-actions button:hover:not(:disabled) {
+  background: #293d55;
+  border-color: #438fce;
+}
+
+[data-theme="dark"] .af-select-button {
+  border-color: #3d6e9e;
+  background: #203b59;
+  color: #b9dcff;
+}
+
+[data-theme="dark"] .af-select-button:hover:not(:disabled) {
+  background: #294d72;
+}
+
+[data-theme="dark"] .af-selected-button,
+[data-theme="dark"] .af-save {
+  background: #1769b5;
+  color: #fff;
+}
+
+[data-theme="dark"] .af-status.active {
+  color: #82bfff;
+}
+
+[data-theme="dark"] .af-status.inactive {
+  color: #9aa8bb;
+}
+
+[data-theme="dark"] .af-error,
+[data-theme="dark"] .af-success {
+  border-color: #365b80;
+  background: #1c3045;
+  color: #c5e0ff;
+}
+
+[data-theme="dark"] .af-empty {
+  color: #9eacc0;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 900px) {
+  .af-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .af-page {
+    padding: 17px;
+  }
+
+  .af-page .ad-header {
+    flex-direction: column;
+  }
+
+  .af-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .af-selected,
+  .af-directory {
+    padding: 16px;
+  }
+
+  .af-order-item {
+    flex-wrap: wrap;
+  }
+
+  .af-order-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

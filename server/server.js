@@ -16,6 +16,8 @@ import demoPaymentRoutes from "./routes/demoPayments.js";
 import transactionTicketRoutes from "./routes/transactionTickets.js";
 import adminDemoReviews from "./routes/adminDemoReviews.js";
 import contactMessageRoutes from "./routes/contactMessages.js";
+import featuredTutorsRoutes from "./routes/featuredTutors.js";
+import homepageStatsRoutes from "./routes/homepageStats.js";
 
 // Development login
 import devLoginRoutes from "./routes/devLogin.js";
@@ -23,7 +25,7 @@ import devLoginRoutes from "./routes/devLogin.js";
 // Wallet
 import walletRoutes from "./routes/wallet.js";
 
-// Demo tutor withdrawals — ADDED
+// Demo tutor withdrawals
 import demoWithdrawalRoutes from "./routes/demoWithdrawals.js";
 
 // Admin routes
@@ -79,6 +81,11 @@ app.use("/api/tutors", tutorListingRoutes);
 app.use("/api/catalog", catalogRoutes);
 app.use("/api/bookings", bookingRoutes);
 
+app.use("/api/featured-tutors", featuredTutorsRoutes);
+
+// Homepage statistics
+app.use("/api/homepage-stats", homepageStatsRoutes);
+
 // ==========================================
 // MANUAL PAYMENT MIGRATION
 // ==========================================
@@ -103,7 +110,7 @@ app.use("/api/demo-earnings", demoEarningsRoutes);
 app.use("/api/demo-payments", demoPaymentRoutes);
 app.use("/api/transaction-tickets", transactionTicketRoutes);
 
-// Demo tutor withdrawals — ADDED
+// Demo tutor withdrawals
 app.use("/api/demo-withdrawals", demoWithdrawalRoutes);
 
 // ==========================================

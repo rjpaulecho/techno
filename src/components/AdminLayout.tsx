@@ -125,6 +125,16 @@ export default function AdminLayout() {
             Tutor Management
           </NavLink>
 
+
+          <NavLink
+            to="/admin/featured-tutors"
+            end
+            className={navClass}
+          >
+            <span aria-hidden="true">✦</span>
+            Featured Tutors
+          </NavLink>
+
           {/* PAYMENT VERIFICATION */}
 
           <NavLink
